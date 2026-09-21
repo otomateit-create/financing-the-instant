@@ -143,12 +143,12 @@ h1 em{font-style:normal; color:var(--accent-ink)}
 }
 
 /* ---- slide 3 · the void stage ---- */
-#s3{position:relative; border-bottom:none; color:#EAF4F6; overflow:hidden}
+#s3{position:relative; border-bottom:none; color:#EAF4F6; overflow:hidden; min-height:100vh; min-height:100svh}
 #s3 .void{
   position:absolute; inset:0; z-index:0; pointer-events:none;
   background:
-    radial-gradient(64% 52% at 50% 44%, rgba(18,72,70,.30) 0%, rgba(6,26,28,.18) 38%, transparent 72%),
-    radial-gradient(130% 92% at 50% 42%, #08171D 0%, #030A0E 44%, #000203 78%, #000 100%);
+    radial-gradient(64% 52% at 50% 50%, rgba(18,72,70,.30) 0%, rgba(6,26,28,.18) 38%, transparent 72%),
+    #08171D;
 }
 #s3 .inner{position:relative; z-index:1}
 #s3 .eyebrow{color:#5FD3C7}
@@ -156,8 +156,8 @@ h1 em{font-style:normal; color:var(--accent-ink)}
 #s3 h1 em{color:#5FD3C7}
 
 .stagewrap{margin-top:clamp(18px,2.4vw,36px)}
-/* the scene is webgl end to end now, so it just takes the width it is given */
-.stage{position:relative; width:100%; aspect-ratio:1000/520; min-height:clamp(290px,40vw,560px)}
+/* the scene is the section's background, edge to edge, behind the text */
+.stage{position:absolute; inset:0; z-index:0; pointer-events:none}
 .n3d{position:absolute; inset:0; z-index:0; opacity:0}
 .n3d canvas{display:block; width:100%; height:100%}
 
@@ -334,21 +334,20 @@ h1 em{font-style:normal; color:var(--accent-ink)}
 <!-- ============ 3 ============ -->
 <section class="sec" id="s3">
   <div class="void" aria-hidden="true"></div>
+  <div class="stage" id="stage" hidden role="img" aria-label="Diagram: capital arrives from everywhere onto a globe of lenders and is deposited into curated pools, which fill only as far as the limit the curators set; the pools advance a flash loan to our protocol, the lattice at the centre of the system; the protocol advances the full purchase price to the broker, whose settlement ring closes on both legs at once; the repayment and fee then travel back through the protocol to the pools and out to the lenders, every leg inside the same transaction.">
+    <div class="n3d" id="n3d" aria-hidden="true"></div>
+    <div class="labs" id="labs" aria-hidden="true">
+      <div class="lab" data-i="0"><b>Lenders</b><span>worldwide, idle capital</span></div>
+      <div class="lab" data-i="1"><b>Curated pools</b><span>curators set the limits</span></div>
+      <div class="lab hub" data-i="2"><b>Our protocol</b><span>advances 100 % of the price, then redistributes</span></div>
+      <div class="lab" data-i="3"><b>The broker</b><span>settles atomically</span></div>
+    </div>
+  </div>
   <div class="inner">
     <p class="eyebrow fade" style="--d:.8s">How it works &nbsp;·&nbsp; where the liquidity comes from</p>
     <h1 class="fade" style="--d:1.02s">Capital from anywhere, risk curated by professionals, <em>lent for the length of one transaction.</em></h1>
 
     <div class="stagewrap">
-      <div class="stage" id="stage" hidden role="img" aria-label="Diagram: capital arrives from everywhere onto a globe of lenders and is deposited into curated pools, which fill only as far as the limit the curators set; the pools advance a flash loan to our protocol, the lattice at the centre of the system; the protocol advances the full purchase price to the broker, whose settlement ring closes on both legs at once; the repayment and fee then travel back through the protocol to the pools and out to the lenders, every leg inside the same transaction.">
-        <div class="n3d" id="n3d" aria-hidden="true"></div>
-        <div class="labs" id="labs" aria-hidden="true">
-          <div class="lab" data-i="0"><b>Lenders</b><span>worldwide, idle capital</span></div>
-          <div class="lab" data-i="1"><b>Curated pools</b><span>curators set the limits</span></div>
-          <div class="lab hub" data-i="2"><b>Our protocol</b><span>advances 100 % of the price, then redistributes</span></div>
-          <div class="lab" data-i="3"><b>The broker</b><span>settles atomically</span></div>
-        </div>
-      </div>
-
       <ol class="nofx" id="nofx">
         <li><b>Lenders</b><span>Idle capital, from anywhere in the world.</span></li>
         <li><b>Curated pools</b><span>Professional curators set the limits it lends within.</span></li>
@@ -546,7 +545,8 @@ h1 em{font-style:normal; color:var(--accent-ink)}
     if (!w || !h) return;
     R3.setSize(w, h, false);
     cam.aspect = w / h;
-    cam.updateProjectionMatrix();
+    /* the scene fills the section, so its centre drops below the headline */
+    cam.setViewOffset(w, h, 0, -h * .08, w, h);
     /* a narrow column frames less of the scene, so the rig backs off to match */
     RIG.k = Math.max(1, Math.pow(1.923 / Math.max(cam.aspect, .5), .62));
   }

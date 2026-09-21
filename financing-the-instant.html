@@ -196,6 +196,60 @@ h1 em{font-style:normal; color:var(--accent-ink)}
 #s3.armed .fade{opacity:0; transform:translateY(9px)}
 #s3.armed.play .fade{opacity:1; transform:none; transition:opacity .6s ease var(--d,0s), transform .6s ease var(--d,0s)}
 
+/* ---- slide 6 · the four feeds ---- */
+.feeds{margin:0; padding:0; list-style:none; display:flex; flex-direction:column}
+.feeds li{padding:clamp(10px,1.1vw,15px) 0; border-top:1px solid var(--line)}
+.feeds li:first-child{border-top:none; padding-top:0}
+.feeds .feed{
+  display:block; font-family:var(--mono); font-size:clamp(10.5px,.85vw,12px); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--accent-ink);
+}
+.feeds p{margin:5px 0 0; font-size:clamp(13px,1.02vw,15.5px); line-height:1.45; color:var(--ink-soft)}
+.feeds p.true{color:var(--ink); font-weight:500}
+.feeds .k{font-family:var(--mono); font-size:.8em; font-weight:600; letter-spacing:.06em; text-transform:uppercase; margin-right:6px}
+.feeds .brk .k{color:var(--back)}
+.feeds .safe .k{color:var(--accent-ink)}
+
+/* ---- slide 6 · trust dependency map ---- */
+.mapwrap{overflow-x:auto; margin-top:clamp(12px,1.4vw,18px)}
+.map{width:100%; min-width:720px; border-collapse:collapse; font-size:clamp(12.5px,.98vw,14.5px); line-height:1.4}
+.map th,.map td{text-align:left; vertical-align:top; padding:clamp(9px,1vw,13px) clamp(8px,1vw,14px); border-bottom:1px solid var(--line)}
+.map thead th{
+  font-family:var(--mono); font-size:clamp(9.5px,.78vw,11px); font-weight:600; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); border-bottom-color:var(--ink-soft); padding-top:0
+}
+.map tbody th{font-weight:600; color:var(--ink); white-space:nowrap}
+.map td{color:var(--ink-soft)}
+.pill{
+  display:inline-block; font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.06em;
+  padding:2px 8px; border-radius:99px; border:1px solid var(--line); color:var(--ink); background:var(--surface-2)
+}
+.scale{display:flex; align-items:center; gap:10px; white-space:nowrap}
+.scale i{display:inline-block; width:10px; height:10px; border-radius:50%; border:1.5px solid var(--accent); margin-right:4px}
+.scale i.on{background:var(--accent)}
+.scale span{font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--muted)}
+
+/* ---- slide 7 · funded per $100 ---- */
+.bars{margin:clamp(12px,1.4vw,18px) 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:clamp(12px,1.4vw,18px)}
+.bars li{display:grid; grid-template-columns:minmax(150px,24%) 1fr; gap:6px clamp(12px,1.6vw,24px); align-items:center}
+.bars .lbl{font-size:clamp(12.5px,1vw,14.5px); font-weight:600; line-height:1.3; color:var(--ink)}
+.bars .lbl small{display:block; font-family:var(--mono); font-size:10.5px; font-weight:400; color:var(--muted); margin-top:2px}
+.bars .track{position:relative; height:26px; border-radius:4px; background:var(--surface-2)}
+.sec--alt .bars .track{background:var(--ground)}
+.bars .fill{position:absolute; left:0; top:0; bottom:0; border-radius:4px; background:var(--accent)}
+.bars .fill.nscc{background:var(--ink-soft)}
+.bars .range{
+  position:absolute; top:0; bottom:0; right:0; border:1.5px dashed var(--accent); border-radius:4px;
+  background:linear-gradient(90deg, var(--tokglow), transparent 85%)
+}
+.bars .val{
+  position:absolute; top:50%; transform:translateY(-50%); font-family:var(--mono); font-size:12px;
+  font-weight:600; color:var(--ink); white-space:nowrap; font-variant-numeric:tabular-nums
+}
+.bars .val.in{right:10px; color:var(--ground)}
+.bars .axis{grid-column:2; display:flex; justify-content:space-between; font-family:var(--mono); font-size:10.5px; color:var(--muted)}
+@media (max-width:640px){ .bars li{grid-template-columns:1fr} .bars .axis{grid-column:1} }
+
 /* ---- scroll cue + rail ---- */
 .cue{
   font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
@@ -247,6 +301,8 @@ h1 em{font-style:normal; color:var(--accent-ink)}
   <a href="#s3" aria-current="false"><i></i><em>How it works</em></a>
   <a href="#s4" aria-current="false"><i></i><em>Question I</em></a>
   <a href="#s5" aria-current="false"><i></i><em>Question II</em></a>
+  <a href="#s6" aria-current="false"><i></i><em>Question III</em></a>
+  <a href="#s7" aria-current="false"><i></i><em>Conclusion</em></a>
 </nav>
 
 <!-- ============ 1 ============ -->
@@ -429,13 +485,157 @@ h1 em{font-style:normal; color:var(--accent-ink)}
   </div>
 </section>
 
+<!-- ============ 6 ============ -->
+<section class="sec sec--alt" id="s6">
+  <div class="inner">
+    <p class="eyebrow">Question III &nbsp;·&nbsp; How much does the business depend on others trusting the data it is built on?</p>
+    <h1>Entirely. NSCC asks you to trust one company. We ask you to trust four data feeds. <em>That is the whole trade, and it cuts both ways.</em></h1>
+
+    <div class="cols">
+      <div>
+        <div class="colhead"><span class="dot" aria-hidden="true">1</span><h2>What trust used to look like</h2></div>
+        <ul class="colbody">
+          <li>NSCC produces trust the old way: vetting members, holding <b>$10 to 20 bn</b> of collateral, <b>50 years</b> of track record. Lehman, 2008: <b>$500 bn unwound, zero loss</b> to the fund.</li>
+          <li>You never verify NSCC's data. You trust the institution, and the SEC supervises it for you.</li>
+          <li>We remove the institution. Every ounce of trust it produced now has to come from data that anyone can check.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="colhead"><span class="dot" aria-hidden="true">2</span><h2>The four feeds we live or die on</h2></div>
+        <ul class="feeds">
+          <li>
+            <b class="feed">The ledger</b>
+            <p class="true">The token really moved and the transfer is final.</p>
+            <p class="brk"><span class="k">Breaks if</span>a court or insolvency administrator refuses to recognise on-chain finality.</p>
+            <p class="safe"><span class="k">Safeguard</span>settlement-finality law (EU proposal, Dec 2025), permissioned or designated chains.</p>
+          </li>
+          <li>
+            <b class="feed">The token</b>
+            <p class="true">The tokenised share is a real share, held by a registered transfer agent.</p>
+            <p class="brk"><span class="k">Breaks if</span>it's a synthetic wrapper with no rights (STA flagged ~$2 bn of such tokens to the SEC, July 2026). Then our collateral is worthless: Danielle's step 4.</p>
+            <p class="safe"><span class="k">Safeguard</span>accept only onshore, transfer-agent-backed tokens.</p>
+          </li>
+          <li>
+            <b class="feed">The price</b>
+            <p class="true">The oracle valuing our collateral is honest for every second of the loan.</p>
+            <p class="brk"><span class="k">Breaks if</span>the feed is manipulated. Flash loans are the number one tool for oracle attacks: Euler $197 m (2023), Balancer $116 m (Nov 2025, after 10+ audits); about 20&nbsp;% of all value stolen in DeFi.</p>
+            <p class="safe"><span class="k">Safeguard</span>multi-source oracles (DTCC chose Chainlink for its own collateral chain, May 2026), conservative haircuts, time-weighted prices.</p>
+          </li>
+          <li>
+            <b class="feed">The dollar</b>
+            <p class="true">The stablecoin we lend is worth $1.</p>
+            <p class="brk"><span class="k">Breaks if</span>reserves fail. USDC traded at $0.87 for a weekend in March 2023.</p>
+            <p class="safe"><span class="k">Safeguard</span>regulated issuers, tokenised bank deposits (JPMD), central-bank-backed cash (Fnality).</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="colhead tilehead"><h2>Trust dependency map</h2></div>
+    <div class="mapwrap">
+      <table class="map">
+        <thead>
+          <tr><th scope="col">Feed</th><th scope="col">Who produces it</th><th scope="col">What breaks</th><th scope="col">How verifiable</th><th scope="col">Residual trust needed</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Ledger</th><td>The chain's validators</td><td>Legal finality of the transfer</td>
+            <td><span class="pill">Public</span></td>
+            <td><div class="scale" role="img" aria-label="Medium"><div><i class="on"></i><i class="on"></i><i></i></div><span>Medium · legal finality</span></div></td>
+          </tr>
+          <tr>
+            <th scope="row">Token</th><td>Issuer and registered transfer agent</td><td>Collateral with no rights behind it</td>
+            <td><span class="pill">Attestation</span></td>
+            <td><div class="scale" role="img" aria-label="High"><div><i class="on"></i><i class="on"></i><i class="on"></i></div><span>High · depends on a custodian</span></div></td>
+          </tr>
+          <tr>
+            <th scope="row">Price</th><td>Oracle network</td><td>Collateral mispriced, pool drained</td>
+            <td><span class="pill">Public</span></td>
+            <td><div class="scale" role="img" aria-label="High"><div><i class="on"></i><i class="on"></i><i class="on"></i></div><span>High · oracle</span></div></td>
+          </tr>
+          <tr>
+            <th scope="row">Dollar</th><td>Stablecoin issuer or bank</td><td>The loan is worth less than $1</td>
+            <td><span class="pill">Audit</span></td>
+            <td><div class="scale" role="img" aria-label="Medium"><div><i class="on"></i><i class="on"></i><i></i></div><span>Medium · reserves</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="colhead tilehead"><h2>The paradox, in numbers</h2></div>
+    <div class="tiles tiles--three">
+      <div class="tile"><div class="fig">98.6&nbsp;%</div><div class="cap">of flows NSCC nets by being trusted</div><div class="sub">the trust we have to replace</div></div>
+      <div class="tile"><div class="fig">~20&nbsp;%</div><div class="cap">of DeFi losses come from flash-loan-enabled attacks</div><div class="sub">the tool we use is the tool used against data</div></div>
+      <div class="tile"><div class="fig">$500 bn</div><div class="cap">unwound by DTCC in the Lehman failure with zero loss</div><div class="sub">the benchmark our data has to match</div></div>
+    </div>
+
+    <p class="band">Trust doesn't disappear on a blockchain. It moves from one institution you cannot audit to four data feeds you can. Our business is not a lending business; it is a data-verification business that happens to lend.</p>
+    <p class="src">One feed being wrong for twelve seconds is enough to drain a pool. The institution fails slowly and visibly; data fails fast and silently. That asymmetry is the price of removing the middleman.</p>
+  </div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="sec" id="s7">
+  <div class="inner">
+    <p class="eyebrow">Conclusion &nbsp;·&nbsp; three questions, one honest answer</p>
+    <h1>The data isn't corrupted, the incentive to corrupt it is real, and we depend on it completely. <em>So the product only works where the clearing house doesn't.</em></h1>
+
+    <div class="cols">
+      <div>
+        <div class="colhead"><span class="dot" aria-hidden="true">1</span><h2>What the three questions told us</h2></div>
+        <ul class="colbody">
+          <li><b>Q1:</b> The record is right, it's just a day late. That day costs $10 to 20 bn in locked collateral and, in a crisis, a broker's ability to trade.</li>
+          <li><b>Q2:</b> A stranger has every reason to run with the money. Atomicity removes the opportunity, not the motive: all steps complete together or none do.</li>
+          <li><b>Q3:</b> The business is 100&nbsp;% dependent on four data feeds being trustworthy. It replaces institutional trust with verifiable data, and inherits data's failure modes.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="colhead"><span class="dot" aria-hidden="true">2</span><h2>Where it works, and where it doesn't</h2></div>
+        <ul class="colbody">
+          <li><b>Doesn't work as a replacement for NSCC.</b> NSCC nets 98.6&nbsp;% of flows; we would fund 100&nbsp;% of them. Interest on 50 to 70 times more principal beats any saving on fees. "Faster is not always better" (SIFMA, June 2026) is arithmetic, not lobbying.</li>
+          <li><b>Works where NSCC is absent.</b> Tokenised stocks ($10 bn+ traded via Backed, $1 bn+ on Ondo), 24/7 and weekend trading, non-US and small brokers who can't meet the $250 k plus capital plus legal bar. There, the alternative isn't netting; it's no market at all.</li>
+          <li><b>Works better with a clock.</b> Most of netting's benefit is captured in 10-minute to 1-hour windows (Journal of Financial Market Infrastructures). Batch trades inside a window, fund the gross with the flash loan, net inside the batch, settle atomically. That is netting without a clearing house, and it's our next step.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="colhead tilehead"><h2>What must be funded per $100 traded</h2></div>
+    <ul class="bars">
+      <li>
+        <span class="lbl">NSCC member<small>approximate</small></span>
+        <div class="track" role="img" aria-label="About $2"><div class="fill nscc" style="width:2%"></div><span class="val" style="left:calc(2% + 10px)">≈ $2 · net cash + margin</span></div>
+      </li>
+      <li>
+        <span class="lbl">Our protocol<small>gross, per trade</small></span>
+        <div class="track" role="img" aria-label="$100"><div class="fill" style="width:100%"></div><span class="val in">$100 borrowed against collateral</span></div>
+      </li>
+      <li>
+        <span class="lbl">Our protocol, 15-minute batch<small>netted inside the window</small></span>
+        <div class="track" role="img" aria-label="Shrinks back toward the NSCC figure"><div class="fill nscc" style="width:2%"></div><div class="range" style="left:2%"></div><span class="val" style="left:calc(2% + 10px)">← shrinks back toward NSCC's figure</span></div>
+      </li>
+      <li aria-hidden="true"><span></span><div class="axis"><span>$0</span><span>$50</span><span>$100</span></div></li>
+    </ul>
+    <p class="src">NSCC bar approximate: derived from the 98.6&nbsp;% netting rate and the VaR charge of $8.4 bn on roughly $3 to 4 tn daily notional. The batch figure depends on the flow inside the window and has yet to be measured.</p>
+
+    <div class="colhead tilehead"><h2>The market we're actually in</h2></div>
+    <div class="tiles tiles--three">
+      <div class="tile"><div class="fig">$4 tn / day</div><div class="cap">cleared by NSCC</div><div class="sub">not our market</div></div>
+      <div class="tile"><div class="fig">~$26 bn</div><div class="cap">all tokenised real-world assets today (excl. stablecoins)</div><div class="sub">our market, small and growing</div></div>
+      <div class="tile"><div class="fig">11 Oct 2027</div><div class="cap">Europe moves to T+1</div><div class="sub">the day the funding gap becomes a European problem too</div></div>
+    </div>
+
+    <p class="band">We don't replace the clearing house. We finance the trades it was never built to clear.</p>
+  </div>
+</section>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/4.5.0/anime.umd.min.js"></script>
 <script>
 /* section rail */
 (function(){
   var secs = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3'),
-              document.getElementById('s4'), document.getElementById('s5')];
+              document.getElementById('s4'), document.getElementById('s5'),
+              document.getElementById('s6'), document.getElementById('s7')];
   var links = Array.prototype.slice.call(document.querySelectorAll('.rail a'));
   if (!('IntersectionObserver' in window)) return;
   var obs = new IntersectionObserver(function(entries){

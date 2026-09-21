@@ -143,7 +143,7 @@ h1 em{font-style:normal; color:var(--accent-ink)}
 }
 
 /* ---- slide 3 · the void stage ---- */
-#s3{position:relative; border-bottom:none; color:#EAF4F6}
+#s3{position:relative; border-bottom:none; color:#EAF4F6; overflow:hidden}
 #s3 .void{
   position:absolute; inset:0; z-index:0; pointer-events:none;
   background:
@@ -156,86 +156,42 @@ h1 em{font-style:normal; color:var(--accent-ink)}
 #s3 h1 em{color:#5FD3C7}
 
 .stagewrap{margin-top:clamp(18px,2.4vw,36px)}
-.stagescroll{overflow-x:auto}
-.stage{position:relative; width:100%; min-width:700px; aspect-ratio:1000/440}
-.fit{
-  position:absolute; left:50%; top:50%; width:1000px; height:440px; margin:-220px 0 0 -500px;
-  transform:scale(var(--k,1)); transform-origin:50% 50%;
-  perspective:1400px; perspective-origin:50% 50%;
-}
-/* the nodes are drawn in webgl, underneath the wires and the type */
-.n3d{position:absolute; inset:0; z-index:0}
+/* the scene is webgl end to end now, so it just takes the width it is given */
+.stage{position:relative; width:100%; aspect-ratio:1000/520; min-height:clamp(290px,40vw,560px)}
+.n3d{position:absolute; inset:0; z-index:0; opacity:0}
 .n3d canvas{display:block; width:100%; height:100%}
-/* the wires and the type hold still, all the life is inside the shapes */
-.world{
-  position:absolute; left:500px; top:220px; width:0; height:0; transform-style:preserve-3d;
-}
-.dust{position:absolute; left:0; top:0; border-radius:50%; background:#CFECE8}
 
-/* ---- the links ---- */
-.link{
-  position:absolute; left:0; top:0; height:1px; width:var(--len);
-  transform-origin:0 50%;
-  transform:translate3d(calc(var(--x) - 500px), calc(var(--y) - 220px), 0) rotate(var(--rot));
+/* the crisp half of each label. the in-scene plate carries the name while the
+   node is across the room; this takes over as the camera comes to rest on it */
+.labs{position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden}
+.labs .lab{
+  position:absolute; left:0; top:0; width:320px; text-align:center;
+  opacity:0; will-change:transform,opacity;
 }
-.wire{
-  position:absolute; inset:0; transform-origin:0 50%; opacity:.2;
-  background:linear-gradient(90deg, rgba(95,211,199,.25), rgba(140,230,218,.85) 50%, rgba(95,211,199,.25));
-}
-.pkt{position:absolute; left:0; top:0; width:0; height:0}
-.pkt i{
-  position:absolute; right:-1px; top:-1.5px; width:38px; height:3px; border-radius:2px; opacity:0;
-  background:linear-gradient(90deg, rgba(95,211,199,0), rgba(120,235,222,.30) 58%, rgba(244,255,253,.92) 100%);
-  box-shadow:0 0 6px rgba(95,211,199,.45);
-}
-.pkt.rev i{right:auto; left:-3px; transform:scaleX(-1)}
-.pkt.back i{
-  background:linear-gradient(90deg, rgba(224,165,82,0), rgba(240,196,130,.30) 58%, rgba(255,243,226,.92) 100%);
-  box-shadow:0 0 6px rgba(224,165,82,.42);
-}
-
-/* ---- the node wrappers: glow, label, position ---- */
-.orbw{
-  position:absolute; left:0; top:0; width:0; height:0; transform-style:preserve-3d;
-  transform:translate3d(calc(var(--x) - 500px), calc(var(--y) - 220px), var(--z,0px));
-  --fill:transparent; --edge:rgba(255,255,255,.85); --ew:1px; --pulse:rgba(200,225,230,.22);
-}
-.orbw.hub{--fill:rgba(47,184,172,.10); --edge:#fff; --ew:1.5px; --pulse:rgba(95,211,199,.30)}
-.orbb{
-  position:absolute; left:0; top:0; width:0; height:0; transform-style:preserve-3d;
-}
-
-.orbb>*{
-  position:absolute; left:0; top:0; border-radius:50%;
-  width:calc(var(--r) * 2); height:calc(var(--r) * 2);
-  margin:calc(var(--r) * -1) 0 0 calc(var(--r) * -1);
-}
-.glow{
-  width:calc(var(--r)*3.2); height:calc(var(--r)*3.2); margin:calc(var(--r)*-1.6) 0 0 calc(var(--r)*-1.6);
-  background:radial-gradient(circle,var(--pulse) 0,transparent 62%); opacity:0;
-}
-
-/* ---- type in the scene ---- */
-.lab{
-  position:absolute; left:0; top:0; width:340px; margin:0 0 0 -170px; text-align:center;
-  height:auto; border-radius:0; transform:translate3d(0, var(--ly), 3px);
-}
-.lab b{
+.labs .lab b{
   display:block; font-family:var(--mono); font-size:15px; font-weight:600; line-height:18px;
   letter-spacing:.14em; text-transform:uppercase; color:#EFF7F9;
+  text-shadow:0 0 16px rgba(2,10,13,.95), 0 0 6px rgba(2,10,13,.9);
 }
-.lab span{
-  display:block; font-family:var(--body); font-size:13.5px; line-height:17px; margin-top:6px; color:#7E9AA3;
+.labs .lab span{
+  display:block; font-family:var(--body); font-size:13.5px; line-height:17px; margin-top:6px; color:#94B6BF;
+  text-shadow:0 0 14px rgba(2,10,13,.95);
 }
-.orbw.hub .lab b{font-size:17px; color:#FFFFFF}
-.orbw.hub .lab span{color:#9FD8D1}
-.leg{
-  position:absolute; left:0; top:0; width:250px; margin-left:-125px; text-align:center;
-  transform:translate3d(calc(var(--x) - 500px), calc(var(--y) - 220px), 2px);
-  font-family:var(--mono); font-size:11px; font-weight:500; line-height:14px;
-  letter-spacing:.17em; text-transform:uppercase; color:#93BCC2;
+.labs .lab.hub b{font-size:17px; color:#FFFFFF}
+.labs .lab.hub span{color:#9FD8D1}
+
+/* what is left when there is no webgl and no script: the same four steps, in order */
+.nofx{
+  position:relative; z-index:1; margin:clamp(18px,2.4vw,30px) 0 0; padding:0; list-style:none;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(10px,1.3vw,22px);
 }
-.leg.back{color:#D9A45E}
+.nofx li{border-top:1px solid rgba(95,211,199,.34); padding-top:13px}
+.nofx b{
+  display:block; font-family:var(--mono); font-size:12px; font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:#EFF7F9;
+}
+.nofx span{display:block; font-size:13.5px; line-height:1.42; margin-top:7px; color:#8FAEB7}
+@media (max-width:820px){ .nofx{grid-template-columns:repeat(2,1fr)} }
 
 #s3.armed .fade{opacity:0; transform:translateY(9px)}
 #s3.armed.play .fade{opacity:1; transform:none; transition:opacity .6s ease var(--d,0s), transform .6s ease var(--d,0s)}
@@ -279,8 +235,6 @@ h1 em{font-style:normal; color:var(--accent-ink)}
   .js-reveal .rv{opacity:1; transform:none}
   .js-reveal .rv.in{transition:none}
   .cue span{animation:none}
-  .world{animation:none}
-  .orbb{animation:none}
   #s3.armed .fade{opacity:1; transform:none}
   #s3.armed.play .fade{transition:none}
 }
@@ -385,60 +339,22 @@ h1 em{font-style:normal; color:var(--accent-ink)}
     <h1 class="fade" style="--d:1.02s">Capital from anywhere, risk curated by professionals, <em>lent for the length of one transaction.</em></h1>
 
     <div class="stagewrap">
-      <div class="stagescroll">
-        <div class="stage" id="stage" role="img" aria-label="Diagram: lenders worldwide deposit into curated pools; the pools advance a flash loan to our protocol, the sphere at the centre of the system; the protocol advances the full purchase price to the broker, who settles atomically and repays with a fee; the protocol then redistributes principal and yield back to the pools and the lenders, every leg inside the same transaction.">
-          <div class="n3d" id="n3d" aria-hidden="true"></div>
-          <div class="fit">
-            <div class="world" id="world">
-
-              <!-- one link per pair, trimmed to each shape: lenders–pools, pools–protocol, protocol–broker -->
-              <div class="link" style="--x:150px;--y:169px;--len:96px;--rot:90deg"><i class="wire"></i><div class="pkt"><i></i></div></div>
-              <div class="link" style="--x:182.8px;--y:306.1px;--len:260.7px;--rot:-15.19deg"><i class="wire"></i><div class="pkt"><i></i></div></div>
-              <div class="link" style="--x:566px;--y:220px;--len:245px;--rot:0deg"><i class="wire"></i><div class="pkt"><i></i></div></div>
-
-              <!-- 1 · lenders -->
-              <div class="orbw" style="--x:150px;--y:125px;--z:-24px;--r:38px;--ly:-96px;--bd:8.5s;--bdl:-2s">
-                <div class="orbb">
-                  <i class="glow"></i>
-                  <div class="lab"><b>Lenders</b><span>worldwide, idle capital</span></div>
-                </div>
-              </div>
-
-              <!-- 2 · curated pools -->
-              <div class="orbw" style="--x:150px;--y:315px;--z:20px;--r:38px;--ly:52px;--bd:10s;--bdl:-5s">
-                <div class="orbb">
-                  <i class="glow"></i>
-                  <div class="lab"><b>Curated pools</b><span>curators set the limits</span></div>
-                </div>
-              </div>
-
-              <!-- 3 · our protocol: the centre that redistributes -->
-              <div class="orbw hub" style="--x:500px;--y:220px;--z:40px;--r:74px;--ly:100px;--bd:12s">
-                <div class="orbb">
-                  <i class="glow"></i>
-                  <div class="lab"><b>Our protocol</b><span>advances 100 % of the price, then redistributes</span></div>
-                </div>
-              </div>
-
-              <!-- 4 · the broker -->
-              <div class="orbw" style="--x:855px;--y:220px;--z:-16px;--r:38px;--ly:-96px;--bd:9.5s;--bdl:-7s">
-                <div class="orbb">
-                  <i class="glow"></i>
-                  <div class="lab"><b>The broker</b><span>settles atomically</span></div>
-                </div>
-              </div>
-
-              <div class="leg" style="--x:214px;--y:213px">deposit</div>
-              <div class="leg" style="--x:334px;--y:293px">flash loan</div>
-              <div class="leg" style="--x:677px;--y:183px">cash leg</div>
-              <div class="leg back" style="--x:677px;--y:245px">repayment + fee</div>
-              <div class="leg" style="--x:334px;--y:243px">principal + yield</div>
-              <div class="leg" style="--x:82px;--y:213px">to the lenders</div>
-
-            </div>
-          </div>
+      <div class="stage" id="stage" hidden role="img" aria-label="Diagram: capital arrives from everywhere onto a globe of lenders and is deposited into curated pools, which fill only as far as the limit the curators set; the pools advance a flash loan to our protocol, the lattice at the centre of the system; the protocol advances the full purchase price to the broker, whose settlement ring closes on both legs at once; the repayment and fee then travel back through the protocol to the pools and out to the lenders, every leg inside the same transaction.">
+        <div class="n3d" id="n3d" aria-hidden="true"></div>
+        <div class="labs" id="labs" aria-hidden="true">
+          <div class="lab" data-i="0"><b>Lenders</b><span>worldwide, idle capital</span></div>
+          <div class="lab" data-i="1"><b>Curated pools</b><span>curators set the limits</span></div>
+          <div class="lab hub" data-i="2"><b>Our protocol</b><span>advances 100 % of the price, then redistributes</span></div>
+          <div class="lab" data-i="3"><b>The broker</b><span>settles atomically</span></div>
         </div>
       </div>
+
+      <ol class="nofx" id="nofx">
+        <li><b>Lenders</b><span>Idle capital, from anywhere in the world.</span></li>
+        <li><b>Curated pools</b><span>Professional curators set the limits it lends within.</span></li>
+        <li><b>Our protocol</b><span>Takes a flash loan and advances 100&nbsp;% of the price.</span></li>
+        <li><b>The broker</b><span>Settles atomically, repays with a fee, and the yield returns.</span></li>
+      </ol>
     </div>
   </div>
 </section>
@@ -563,421 +479,800 @@ h1 em{font-style:normal; color:var(--accent-ink)}
   targets.forEach(function(t){ io.observe(t); });
 })();
 
-/* the constellation */
+/* ---------------------------------------------------------------------------
+   the constellation · one scene, one camera, one full turn around it.
+
+   the whole diagram is webgl now. a css-3d layer and a moving three.js camera
+   cannot share a view, so the conduits, the motes and the type in the scene
+   are all geometry. anime.js owns the clock: it tweens a handful of plain
+   objects (the camera rig, and one state bag per shape) and the raf loop does
+   nothing but read those numbers and push them at three. every tween is
+   written [from, to] so the 22 s loop restarts from a known state.
+   --------------------------------------------------------------------------- */
 (function(){
-  var s3 = document.getElementById('s3');
-  var stage = document.getElementById('stage');
-  var fitEl = stage.querySelector('.fit');
-  var world = document.getElementById('world');
-  var A = window.anime;
-  var q = function(sel, root){ return Array.prototype.slice.call((root || stage).querySelectorAll(sel)); };
+  var s3     = document.getElementById('s3');
+  var stage  = document.getElementById('stage');
+  var host   = document.getElementById('n3d');
+  var labsEl = document.getElementById('labs');
+  var nofx   = document.getElementById('nofx');
+  var A      = window.anime;
+  var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-  /* the constellation is authored 1000px wide, then fitted to the column */
-  function fit(){ fitEl.style.setProperty('--k', (stage.clientWidth / 1000).toFixed(4)); }
-  fit();
-  if ('ResizeObserver' in window) new ResizeObserver(fit).observe(stage);
-  else window.addEventListener('resize', fit);
+  s3.classList.add('armed');
+  if (!stage || !host || !window.THREE) return;      /* the plain list stays in place */
 
-  /* dust at assorted depths, it is what gives the void a volume */
-  var dust = [];
-  for (var i = 0; i < 46; i++){
-    var d = document.createElement('i');
-    var s = (0.9 + Math.random() * 1.7).toFixed(1);
-    d.className = 'dust';
-    d.style.width = d.style.height = s + 'px';
-    d.style.transform = 'translate3d(' + Math.round(-640 + Math.random() * 1280) + 'px,' +
-                        Math.round(-300 + Math.random() * 600) + 'px,' +
-                        Math.round(-460 + Math.random() * 600) + 'px)';
-    d.style.opacity = (0.08 + Math.random() * 0.34).toFixed(2);
-    world.insertBefore(d, world.firstChild);
-    dust.push(d);
+  var TEAL = 0x5FD3C7, WHITE = 0xEAF7F6, AMBER = 0xE0A552;
+  var TOTAL = 22000;
+  var DEG = Math.PI / 180;
+
+  /* the four actors, spread through the volume so the orbit has something to
+     parallax against. the protocol sits at the origin: everything redistributes
+     through it, so the camera turns around it too. */
+  var NODE = [
+    { p:new THREE.Vector3(-340,  150, -120), r:46, ly: -86 },
+    { p:new THREE.Vector3(-300, -130,   90), r:54, ly:  74 },
+    { p:new THREE.Vector3(   0,    0,    0), r:78, ly: -92 },
+    { p:new THREE.Vector3( 360,   30,  -80), r:56, ly: -88 }
+  ];
+  var LINK = [[0,1],[1,2],[2,3]];
+
+  function clamp01(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function smooth(x){ return x * x * (3 - 2 * x); }
+
+  /* ---------------- renderer, camera, rig ---------------- */
+  var R3 = new THREE.WebGLRenderer({ antialias:true, alpha:true, powerPreference:'high-performance' });
+  R3.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  R3.setClearColor(0x000000, 0);
+  host.appendChild(R3.domElement);
+  stage.hidden = false;
+  if (nofx) nofx.hidden = true;
+
+  var scene = new THREE.Scene();
+  /* black fog: on the additively blended motes it reads as distance falloff,
+     which is what gives the void a floor and a far wall */
+  scene.fog = new THREE.FogExp2(0x02090C, 0.00058);
+
+  var cam = new THREE.PerspectiveCamera(42, 1000 / 520, 10, 7000);
+  scene.add(new THREE.AmbientLight(0x9FC4CC, .55));
+  var keyL = new THREE.DirectionalLight(0xFFFFFF, 1.05); keyL.position.set(-.4, .8, 1); scene.add(keyL);
+  var fillL = new THREE.DirectionalLight(0x2FB8AC, .6);  fillL.position.set(.7, -.4, .5); scene.add(fillL);
+
+  /* the rig anime.js actually animates. az is allowed to run past 360 so a
+     lap is always a lap forwards, never a 320 degree lurch backwards. */
+  var RIG = { az:-34, el:18, rad:1020, tx:-40, ty:10, tz:-20, k:1 };
+
+  function fit(){
+    var w = host.clientWidth, h = host.clientHeight;
+    if (!w || !h) return;
+    R3.setSize(w, h, false);
+    cam.aspect = w / h;
+    cam.updateProjectionMatrix();
+    /* a narrow column frames less of the scene, so the rig backs off to match */
+    RIG.k = Math.max(1, Math.pow(1.923 / Math.max(cam.aspect, .5), .62));
   }
 
-  var voidbg = s3.querySelector('.void');
-  var orbw   = q('.orbw');
-  var labs   = q('.lab');
-  var legs   = q('.leg');
-  var wires  = q('.wire');
-  var pkts   = q('.pkt');
-  var glows  = orbw.map(function(o){ return o.querySelector('.glow'); });
-  var LEN    = [96, 260.7, 245];
+  function place(T){
+    var az = (RIG.az + Math.sin(T * .21) * 1.2) * DEG;
+    var el = (RIG.el + Math.sin(T * .17) * .9) * DEG;
+    var rad = RIG.rad * RIG.k, ce = Math.cos(el);
+    cam.position.set(RIG.tx + rad * ce * Math.sin(az),
+                     RIG.ty + rad * Math.sin(el),
+                     RIG.tz + rad * ce * Math.cos(az));
+    cam.lookAt(RIG.tx, RIG.ty, RIG.tz);
+  }
 
-  /* the money always ends where it started: the hub takes the repayment in,
-     then pushes principal and yield back out to the liquidity side. */
-  var BEATS = [
-    { link:0, dir: 1, to:1, leg:0, at:0    , dur:760 },
-    { link:1, dir: 1, to:2, leg:1, at:880  , dur:820 },
-    { link:2, dir: 1, to:3, leg:2, at:1800 , dur:820 },
-    { link:2, dir:-1, to:2, leg:3, at:2720 , dur:840, back:true, flash:true },
-    { link:1, dir:-1, to:1, leg:4, at:3700 , dur:820 },
-    { link:0, dir:-1, to:0, leg:5, at:4620 , dur:760 }
-  ];
-  var LOOP = 6000;
+  /* ---------------- shared bits ---------------- */
+  function dotTex(){
+    var c = document.createElement('canvas'); c.width = c.height = 64;
+    var x = c.getContext('2d'), gr = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.35, 'rgba(255,255,255,.85)');
+    gr.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = gr; x.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(c);
+  }
+  var DOT = dotTex();
 
-  /* ---------- the four nodes, drawn in webgl under the wires and the type ---------- */
-  var N3D = (function(){
-    var host = document.getElementById('n3d');
-    if (!host || !window.THREE) return null;
-
-    var WHITE = 0xEAF7F6, TEALC = 0x5FD3C7;
-    /* a round sprite, so the validator dots are points of light and not squares */
-    function dotTex(){
-      var c = document.createElement('canvas'); c.width = c.height = 64;
-      var ctx = c.getContext('2d'), gr = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-      gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.35, 'rgba(255,255,255,.85)');
-      gr.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.fillStyle = gr; ctx.fillRect(0, 0, 64, 64);
-      return new THREE.CanvasTexture(c);
+  /* type rendered to a canvas so it can live in the scene itself. the plate is
+     authored in css pixels and divided down, so 15 px here reads as 15 px on
+     the glass when the camera is at its holding distance. */
+  var PLATE_K = 1 / 1.5;
+  function plate(spec){
+    var W = spec.w || 440, H = spec.h || 112, dpr = 2;
+    var c = document.createElement('canvas');
+    c.width = W * dpr; c.height = H * dpr;
+    var x = c.getContext('2d');
+    x.scale(dpr, dpr);
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    if ('letterSpacing' in x) x.letterSpacing = (spec.ls || 2.1) + 'px';
+    var ts = spec.size || 15, mid = H / 2 - (spec.sub ? 12 : 0);
+    x.font = '600 ' + ts + 'px "IBM Plex Mono", monospace';
+    x.fillStyle = spec.color || '#EFF7F9';
+    x.shadowColor = 'rgba(2,10,13,.95)'; x.shadowBlur = 16;
+    x.fillText((spec.title || '').toUpperCase(), W / 2, mid);
+    if (spec.sub){
+      if ('letterSpacing' in x) x.letterSpacing = '0px';
+      x.font = '400 13.5px "IBM Plex Sans", sans-serif';
+      x.fillStyle = spec.subColor || '#94B6BF';
+      x.fillText(spec.sub, W / 2, mid + 24);
     }
-    var P = [{ x:150, y:125, r:38 }, { x:150, y:315, r:38 }, { x:500, y:220, r:74 }, { x:855, y:220, r:38 }];
+    var tex = new THREE.CanvasTexture(c);
+    tex.minFilter = THREE.LinearFilter;
+    var m = new THREE.MeshBasicMaterial({ map:tex, transparent:true, depthWrite:false,
+                                          opacity:0, side:THREE.DoubleSide, fog:false });
+    var mesh = new THREE.Mesh(new THREE.PlaneGeometry(W * PLATE_K, H * PLATE_K), m);
+    return { mesh:mesh, mat:m };
+  }
 
-    var R3 = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-    R3.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    R3.setClearColor(0x000000, 0);
-    host.appendChild(R3.domElement);
-
-    var scene = new THREE.Scene();
-    /* fov and distance chosen so the z=0 plane maps 1:1 onto the 1000×440 grid */
-    var fov = 26, cam = new THREE.PerspectiveCamera(fov, 1000 / 440, 10, 5000);
-    cam.position.z = 220 / Math.tan(fov * Math.PI / 360);
-    scene.add(new THREE.AmbientLight(0x9FC4CC, .5));
-    var keyL = new THREE.DirectionalLight(0xFFFFFF, 1); keyL.position.set(-.4, .8, 1); scene.add(keyL);
-    var fillL = new THREE.DirectionalLight(0x2FB8AC, .6); fillL.position.set(.7, -.4, .5); scene.add(fillL);
-
-    var lastFrame = null;
-    function fitCanvas(){
-      R3.setSize(host.clientWidth, host.clientHeight, false);
-      if (lastFrame) lastFrame();            /* a resize clears the buffer: draw the same frame again */
+  function dashedRing(r, color, op, dash, gap){
+    var pts = [];
+    for (var i = 0; i <= 200; i++){
+      var a = i / 200 * Math.PI * 2;
+      pts.push(new THREE.Vector3(Math.cos(a) * r, Math.sin(a) * r, 0));
     }
-    fitCanvas();
-    if ('ResizeObserver' in window) new ResizeObserver(fitCanvas).observe(host);
-    else window.addEventListener('resize', fitCanvas);
+    var m = new THREE.LineDashedMaterial({ color:color, transparent:true, opacity:op,
+                                           dashSize:dash, gapSize:gap });
+    var l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), m);
+    l.computeLineDistances();
+    return { line:l, mat:m };
+  }
 
-    /* 1 · lenders: the mesh on its own, nothing inside it */
-    function lenders(r){
-      var g = new THREE.Group(), N = 118, pts = [], golden = Math.PI * (3 - Math.sqrt(5)), i;
-      for (i = 0; i < N; i++){
-        var y = 1 - 2 * (i + .5) / N, rr = Math.sqrt(1 - y * y), th = golden * i;
-        pts.push(new THREE.Vector3(Math.cos(th) * rr * r, y * r, Math.sin(th) * rr * r));
+  /* a square ring, matching the square cross section of the pool vessel */
+  function squareRing(r, color, op){
+    var pts = [], i;
+    for (i = 0; i <= 4; i++){
+      var a = i / 4 * Math.PI * 2;
+      pts.push(new THREE.Vector3(Math.cos(a) * r, 0, -Math.sin(a) * r));
+    }
+    var m = new THREE.LineBasicMaterial({ color:color, transparent:true, opacity:op });
+    return { line:new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), m), mat:m };
+  }
+
+  /* ---------------- 1 · lenders ----------------
+     a globe of idle capital. motes rain in out of the void and land on it, one
+     by one, until the whole surface is lit; then it sheds what it has gathered
+     down the conduit and dims back to embers. */
+  function lenders(r){
+    var g = new THREE.Group(), N = 150, pts = [], golden = Math.PI * (3 - Math.sqrt(5)), i;
+    for (i = 0; i < N; i++){
+      var y = 1 - 2 * (i + .5) / N, rr = Math.sqrt(1 - y * y), th = golden * i;
+      pts.push(new THREE.Vector3(Math.cos(th) * rr * r, y * r, Math.sin(th) * rr * r));
+    }
+
+    /* nearest neighbours, so the mesh reads as a shell and not as a cloud */
+    var seg = [], seen = {};
+    pts.forEach(function(a, k){
+      pts.map(function(b, j){ return [a.distanceToSquared(b), j]; })
+         .sort(function(u, v){ return u[0] - v[0]; }).slice(1, 4)
+         .forEach(function(nb){
+           var id = Math.min(k, nb[1]) + '_' + Math.max(k, nb[1]);
+           if (seen[id]) return;
+           seen[id] = 1;
+           var b = pts[nb[1]];
+           seg.push(a.x, a.y, a.z, b.x, b.y, b.z);
+         });
+    });
+    var lg = new THREE.BufferGeometry();
+    lg.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
+    var lm = new THREE.LineBasicMaterial({ color:TEAL, transparent:true, opacity:.3 });
+    g.add(new THREE.LineSegments(lg, lm));
+
+    var pg = new THREE.BufferGeometry(), pos = [], col = new Float32Array(N * 3);
+    pts.forEach(function(v){ pos.push(v.x, v.y, v.z); });
+    pg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    pg.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    var pm = new THREE.PointsMaterial({ size:11, vertexColors:true, transparent:true, depthWrite:false,
+                                        map:DOT, alphaTest:.04, blending:THREE.AdditiveBlending });
+    g.add(new THREE.Points(pg, pm));
+
+    /* the incoming capital: one mote per surface point, each starting somewhere
+       far out in the dark and arriving on its own beat */
+    var far = [], gpos = new Float32Array(N * 3), gcol = new Float32Array(N * 3);
+    for (i = 0; i < N; i++){
+      var d = new THREE.Vector3(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
+      if (d.lengthSq() < 1e-4) d.set(0, 1, 0);
+      far.push(d.normalize().multiplyScalar(250 + Math.random() * 480));
+    }
+    var gg = new THREE.BufferGeometry();
+    gg.setAttribute('position', new THREE.BufferAttribute(gpos, 3));
+    gg.setAttribute('color', new THREE.BufferAttribute(gcol, 3));
+    var gm = new THREE.PointsMaterial({ size:13, vertexColors:true, transparent:true, depthWrite:false,
+                                        map:DOT, blending:THREE.AdditiveBlending, fog:false });
+    var gpoints = new THREE.Points(gg, gm);
+    gpoints.frustumCulled = false;
+    g.add(gpoints);
+
+    var dim = new THREE.Color(0x2C6E71), mid = new THREE.Color(TEAL),
+        hot = new THREE.Color(0xF2FFFC), tmp = new THREE.Color();
+    var seed = pts.map(function(v, k){ return Math.abs(Math.sin(k * 12.9898) * 43758.5453) % 1; });
+    var M = [{ m:lm, o:.3 }, { m:pm, o:1 }, { m:gm, o:1 }];
+
+    return { group:g, mats:M, update:function(T, S){
+      g.rotation.set(.18, T * .13, 0);
+      var charge = S.charge, shed = S.shed;
+
+      for (var k = 0; k < N; k++){
+        var sd = seed[k];
+        /* every mote has its own slot in the arrival: the last of them lands
+           just as charge reaches 1 */
+        var a = clamp01((charge - sd * .62) / .38), e = smooth(a);
+        var f = far[k], q = pts[k];
+        gpos[k * 3]     = f.x + (q.x - f.x) * e;
+        gpos[k * 3 + 1] = f.y + (q.y - f.y) * e;
+        gpos[k * 3 + 2] = f.z + (q.z - f.z) * e;
+        /* bright in transit, gone once it has merged into the shell */
+        var vis = Math.sin(Math.PI * a) * .95;
+        gcol[k * 3] = .78 * vis; gcol[k * 3 + 1] = vis; gcol[k * 3 + 2] = .95 * vis;
+
+        /* the shell point lights when its mote lands, and gives it all away later */
+        var flick = Math.sin(T * (1.2 + sd * 2.4) + sd * 40) > .93 ? .95 : .22;
+        tmp.copy(dim).lerp(mid, flick).lerp(hot, a * (1 - shed * .82) * .9);
+        var give = 1 - shed * .66;
+        col[k * 3] = tmp.r * give; col[k * 3 + 1] = tmp.g * give; col[k * 3 + 2] = tmp.b * give;
       }
-      var seg = [], seen = {};
-      pts.forEach(function(a, k){
-        pts.map(function(b, j){ return [a.distanceToSquared(b), j]; })
-           .sort(function(u, v){ return u[0] - v[0]; }).slice(1, 4)
-           .forEach(function(nb){
-             var id = Math.min(k, nb[1]) + '_' + Math.max(k, nb[1]);
-             if (seen[id]) return;
-             seen[id] = 1;
-             var b = pts[nb[1]];
-             seg.push(a.x, a.y, a.z, b.x, b.y, b.z);
-           });
-      });
-      var lg = new THREE.BufferGeometry();
-      lg.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
-      var lm = new THREE.LineBasicMaterial({ color:TEALC, transparent:true, opacity:.32 });
-      g.add(new THREE.LineSegments(lg, lm));
-
-      var pg = new THREE.BufferGeometry(), pos = [], col = new Float32Array(N * 3);
-      pts.forEach(function(v){ pos.push(v.x, v.y, v.z); });
-      pg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-      pg.setAttribute('color', new THREE.BufferAttribute(col, 3));
-      var pm = new THREE.PointsMaterial({ size:11, vertexColors:true, transparent:true, depthWrite:false,
-                                          map:dotTex(), alphaTest:.04, blending:THREE.AdditiveBlending });
-      g.add(new THREE.Points(pg, pm));
-
-      var dim = new THREE.Color(0x2C6E71), mid = new THREE.Color(TEALC), hot = new THREE.Color(0xF2FFFC), tmp = new THREE.Color();
-      var seeds = pts.map(function(v, k){ return Math.abs(Math.sin(k * 12.9898) * 43758.5453) % 1; });
-      var M = [{ m:lm, o:.32 }, { m:pm, o:1 }];
-      return { group:g, mats:M, update:function(T, p){
-        g.rotation.set(.2, T * .16, 0);
-        pts.forEach(function(v, k){
-          var sd = seeds[k];
-          var flick = Math.sin(T * (1.2 + sd * 2.4) + sd * 40) > .93 ? .95 : .22;
-          var top = 1 - (v.y / r + 1) / 2;                       /* 0 at the top pole */
-          var wave = p > 0 ? Math.max(0, Math.min(1, (p * 1.5 - top) * 3)) : 0;
-          tmp.copy(dim).lerp(mid, flick).lerp(hot, wave * .9);
-          col[k * 3] = tmp.r; col[k * 3 + 1] = tmp.g; col[k * 3 + 2] = tmp.b;
-        });
-        pg.attributes.color.needsUpdate = true;
-        M[0].o = .28 + p * .45;
-      }};
-    }
-
-    /* 2 · curated pools: white edges over a black body */
-    function pools(r){
-      var g = new THREE.Group(), geo = new THREE.OctahedronGeometry(r * .74, 0);
-      var bm = new THREE.MeshBasicMaterial({ color:0x03090C, transparent:true, opacity:1 });
-      var body = new THREE.Mesh(geo, bm); body.scale.y = 1.5; g.add(body);
-      var lm = new THREE.LineBasicMaterial({ color:WHITE, transparent:true, opacity:.9 });
-      var ed = new THREE.LineSegments(new THREE.EdgesGeometry(geo), lm); ed.scale.y = 1.5; g.add(ed);
-      var M = [{ m:bm, o:1 }, { m:lm, o:.9 }];
-      return { group:g, mats:M, update:function(T, p){
-        g.rotation.set(Math.sin(T * .22) * .12, T * .3, 0);
-        M[1].o = .78 + p * .22;
-      }};
-    }
-
-    /* 3 · our protocol: a computation lattice: every cube is one step,
-       the light runs through the links, and the last cube is the result */
-    function protocol(r){
-      var g = new THREE.Group(), tilt = new THREE.Group(); g.add(tilt);
-      var c = r * .17;
-      var XS = [-.62 * r, -.24 * r, .14 * r], RX = .55 * r, OFF = [-.3 * r, 0, .3 * r];
-      var geo = new THREE.BoxGeometry(c, c, c), egeo = new THREE.EdgesGeometry(geo);
-      var rgeo = new THREE.BoxGeometry(c * 1.7, c * 1.7, c * 1.7), regeo = new THREE.EdgesGeometry(rgeo);
-      var mats = [], cubes = [];
-
-      /* every cube keeps the same orientation, so the edges stay aligned across the lattice */
-      function addCube(x, y, z, layer, big){
-        var fm = new THREE.MeshStandardMaterial({ color:0x0A1A21, metalness:.25, roughness:.5,
-                                                  emissive:0x2FB8AC, emissiveIntensity:0, transparent:true, opacity:1 });
-        var lm = new THREE.LineBasicMaterial({ color:WHITE, transparent:true, opacity:.5 });
-        var m = new THREE.Mesh(big ? rgeo : geo, fm);
-        m.position.set(x, y, z);
-        m.add(new THREE.LineSegments(big ? regeo : egeo, lm));
-        tilt.add(m);
-        var fe = { m:fm, o:1 }, le = { m:lm, o:.5 };
-        mats.push(fe, le);
-        cubes.push({ fm:fm, le:le, layer:layer, p:m.position, m:m });
-        return cubes.length - 1;
-      }
-      var layers = XS.map(function(x, L){
-        var ids = [];
-        OFF.forEach(function(y){ OFF.forEach(function(z){ ids.push(addCube(x, y, z, L, false)); }); });
-        return ids;
-      });
-      var resultId = addCube(RX, 0, 0, 3, true);
-
-      /* each step feeds the next one: straight through, plus one crossing branch */
-      var links = [];
-      function link(a, b, stage){ links.push({ a:cubes[a].p, b:cubes[b].p, stage:stage }); }
-      [0, 1].forEach(function(L){
-        layers[L].forEach(function(id, k){
-          link(id, layers[L + 1][k], L);
-          link(id, layers[L + 1][(k + 4) % 9], L);
-        });
-      });
-      layers[2].forEach(function(id){ link(id, resultId, 2); });
-
-      var lpos = [];
-      links.forEach(function(l){ lpos.push(l.a.x, l.a.y, l.a.z, l.b.x, l.b.y, l.b.z); });
-      var lgeo = new THREE.BufferGeometry();
-      lgeo.setAttribute('position', new THREE.Float32BufferAttribute(lpos, 3));
-      var llm = new THREE.LineBasicMaterial({ color:TEALC, transparent:true, opacity:.14 });
-      tilt.add(new THREE.LineSegments(lgeo, llm));
-      var lle = { m:llm, o:.14 }; mats.push(lle);
-
-      /* one point per link, the value in transit between two steps */
-      var dpos = new Float32Array(links.length * 3), dcol = new Float32Array(links.length * 3);
-      var dgeo = new THREE.BufferGeometry();
-      dgeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
-      dgeo.setAttribute('color', new THREE.BufferAttribute(dcol, 3));
-      var dm = new THREE.PointsMaterial({ size:6, vertexColors:true, map:dotTex(), transparent:true,
-                                          depthWrite:false, blending:THREE.AdditiveBlending });
-      tilt.add(new THREE.Points(dgeo, dm));
-      mats.push({ m:dm, o:1 });
-
-      var CYC = 2.6, STG = .58, HOP = .46, t0 = -9, armed = false;
-      return { group:g, mats:mats, update:function(T, p){
-        tilt.rotation.set(.26 + Math.sin(T * .16) * .025, .4 + Math.sin(T * .11) * .05, 0);
-
-        /* a packet lands, the lattice runs a pass */
-        if (p > .55 && !armed){ t0 = T; armed = true; }
-        if (p < .2) armed = false;
-        var ph = (T - t0) % CYC;
-
-        cubes.forEach(function(q){
-          var x = ph - q.layer * STG, last = q.layer === 3;
-          var on = x < 0 ? 0 : Math.exp(-x / (last ? .8 : .34)) * Math.min(1, x / .06);
-          q.fm.emissiveIntensity = (last ? .09 : .02) + on * (last ? 1.5 : .75) + p * .12;
-          q.le.o = .4 + on * .55 + p * .1;
-        });
-
-        for (var i = 0; i < links.length; i++){
-          var L = links[i], k = (ph - L.stage * STG - .12) / HOP, v = 0, t = 0;
-          if (k > 0 && k < 1){ t = k * k * (3 - 2 * k); v = Math.sin(Math.PI * k); }
-          dpos[i * 3]     = L.a.x + (L.b.x - L.a.x) * t;
-          dpos[i * 3 + 1] = L.a.y + (L.b.y - L.a.y) * t;
-          dpos[i * 3 + 2] = L.a.z + (L.b.z - L.a.z) * t;
-          dcol[i * 3] = .76 * v; dcol[i * 3 + 1] = v; dcol[i * 3 + 2] = .95 * v;
-        }
-        dgeo.attributes.position.needsUpdate = true;
-        dgeo.attributes.color.needsUpdate = true;
-        lle.o = .12 + p * .2;
-      }};
-    }
-
-    /* 4 · the broker: one dashed circle */
-    function broker(r){
-      var g = new THREE.Group(), pts = [];
-      for (var i = 0; i <= 240; i++){
-        var a = i / 240 * Math.PI * 2;
-        pts.push(new THREE.Vector3(Math.cos(a) * r * .95, Math.sin(a) * r * .95, 0));
-      }
-      var lg = new THREE.BufferGeometry().setFromPoints(pts);
-      var lm = new THREE.LineDashedMaterial({ color:WHITE, transparent:true, opacity:.9, dashSize:8, gapSize:6.5 });
-      var line = new THREE.Line(lg, lm); line.computeLineDistances(); g.add(line);
-      var M = [{ m:lm, o:.9 }];
-      return { group:g, mats:M, update:function(T, p){
-        line.rotation.z = T * .14;
-        M[0].o = .76 + p * .24;
-      }};
-    }
-
-    var nodes = [lenders(P[0].r), pools(P[1].r), protocol(P[2].r), broker(P[3].r)];
-    nodes.forEach(function(n, i){ n.group.position.set(P[i].x - 500, 220 - P[i].y, 0); scene.add(n.group); });
-
-    return { frame:function(T, rev, pulse){
-      lastFrame = function(){
-        nodes.forEach(function(n, i){
-          n.update(T, pulse[i]);
-          n.group.scale.setScalar(rev[i].s);
-          n.mats.forEach(function(e){ e.m.opacity = e.o * rev[i].a; });
-        });
-        R3.render(scene, cam);
-      };
-      lastFrame();
+      gpoints.visible = charge > .002 && charge < .998;
+      gg.attributes.position.needsUpdate = true;
+      gg.attributes.color.needsUpdate = true;
+      pg.attributes.color.needsUpdate = true;
+      M[0].o = .2 + charge * .28 - shed * .12;
     }};
+  }
+
+  /* ---------------- 2 · curated pools ----------------
+     a vessel, not a gem. the liquidity is visibly inside it and the amber line
+     is the curator's limit: the fill rises to it and stops there. */
+  function pools(r){
+    var g = new THREE.Group(), R = r * .82, HY = 1.45, halfH = R * HY, CAP = .84;
+
+    var geo = new THREE.OctahedronGeometry(R, 0);
+    /* back faces only, so the vessel is read through: you see its far wall behind
+       the liquid rather than a solid lump in front of it */
+    var bm = new THREE.MeshBasicMaterial({ color:0x04121A, transparent:true, opacity:.34,
+                                           side:THREE.BackSide, depthWrite:false });
+    var vessel = new THREE.Group(); g.add(vessel);
+    var body = new THREE.Mesh(geo, bm); body.scale.y = HY; body.renderOrder = 0; vessel.add(body);
+    var em = new THREE.LineBasicMaterial({ color:WHITE, transparent:true, opacity:.9 });
+    var edges = new THREE.LineSegments(new THREE.EdgesGeometry(geo), em); edges.scale.y = HY;
+    edges.renderOrder = 4; vessel.add(edges);
+
+    /* the fill: a four sided cone standing on the bottom apex, so it tapers
+       exactly the way the vessel does */
+    var fgeo = new THREE.ConeGeometry(1, 1, 4, 1, true);
+    fgeo.rotateX(Math.PI);                                  /* apex now points down */
+    var fm = new THREE.MeshBasicMaterial({ color:0x1AA79B, transparent:true, opacity:.42,
+                                           side:THREE.DoubleSide, depthWrite:false });
+    fm.opacity = .36;
+    var fill = new THREE.Mesh(fgeo, fm); fill.renderOrder = 1; vessel.add(fill);
+
+    /* the surface of the liquid, and its bright rim */
+    var sgeo = new THREE.CircleGeometry(1, 4); sgeo.rotateX(-Math.PI / 2);
+    var sm = new THREE.MeshBasicMaterial({ color:TEAL, transparent:true, opacity:.34,
+                                           side:THREE.DoubleSide, depthWrite:false,
+                                           blending:THREE.AdditiveBlending });
+    var surf = new THREE.Mesh(sgeo, sm); surf.renderOrder = 2; vessel.add(surf);
+    var srim = squareRing(1, 0xF2FFFC, .9); srim.line.renderOrder = 3; vessel.add(srim.line);
+
+    /* the limit the curators set */
+    var cap = squareRing(CAP * R, AMBER, .85); cap.line.position.y = -halfH + CAP * halfH;
+    cap.line.renderOrder = 5; vessel.add(cap.line);
+    var cap2 = squareRing(CAP * R * 1.06, AMBER, .28); cap2.line.position.y = cap.line.position.y;
+    cap2.line.renderOrder = 5; vessel.add(cap2.line);
+    var capTag = plate({ title:'curator cap', size:9, ls:2, w:150, h:32, color:'#E0A552' });
+    var capOff = R + 150 * PLATE_K * .5 + 18;
+    g.add(capTag.mesh);
+
+    var M = [{ m:bm, o:.62 }, { m:em, o:.9 }, { m:fm, o:.5 }, { m:sm, o:.34 },
+             { m:srim.mat, o:.9 }, { m:cap.mat, o:.85 }, { m:cap2.mat, o:.28 }];
+
+    return { group:g, mats:M, billboard:[capTag.mesh], update:function(T, S){
+      vessel.rotation.y = T * .12;
+      /* the fill never passes the cap, however much arrives */
+      var L = clamp01(S.level) * CAP;
+      var wob = L > .02 ? Math.sin(T * 1.9) * .006 + Math.sin(T * 3.3) * .003 : 0;
+      var lv = Math.max(0, L + wob), h = lv * halfH, rad = Math.max(1e-3, lv * R);
+
+      fill.visible = surf.visible = srim.line.visible = lv > .012;
+      fill.scale.set(rad, h, rad);
+      fill.position.y = -halfH + h / 2;
+      surf.scale.set(rad, 1, rad);
+      surf.position.y = srim.line.position.y = -halfH + h;
+      srim.line.scale.set(rad, 1, rad);
+
+      /* it glows a little hotter once the yield has come back in */
+      M[2].o = .34 + S.yield * .2;
+      M[3].o = .3 + S.yield * .3;
+      M[1].o = .8 + clamp01(S.level) * .18;
+      /* the cap answers when the liquid actually reaches it */
+      var near = clamp01((clamp01(S.level) - .9) * 10);
+      M[5].o = .55 + near * .45 + Math.sin(T * 4) * near * .12;
+      capTag.mesh.position.set(S.right.x * capOff,
+                               cap.line.position.y + S.right.y * capOff,
+                               S.right.z * capOff);
+      capTag.mat.opacity = (.5 + near * .5) * S.hold[1];
+      capTag.mesh.visible = capTag.mat.opacity > .004;
+    }};
+  }
+
+  /* ---------------- 3 · our protocol ----------------
+     a computation lattice: every cube is one step, the light runs through the
+     links, and the last cube is the result. unchanged from the flat version,
+     it already had the depth the orbit needed. */
+  function protocol(r){
+    var g = new THREE.Group(), tilt = new THREE.Group(); g.add(tilt);
+    var c = r * .17;
+    var XS = [-.62 * r, -.24 * r, .14 * r], RX = .55 * r, OFF = [-.3 * r, 0, .3 * r];
+    var geo = new THREE.BoxGeometry(c, c, c), egeo = new THREE.EdgesGeometry(geo);
+    var rgeo = new THREE.BoxGeometry(c * 1.7, c * 1.7, c * 1.7), regeo = new THREE.EdgesGeometry(rgeo);
+    var mats = [], cubes = [];
+
+    function addCube(x, y, z, layer, big){
+      var fm = new THREE.MeshStandardMaterial({ color:0x0A1A21, metalness:.25, roughness:.5,
+                                                emissive:0x2FB8AC, emissiveIntensity:0, transparent:true, opacity:1 });
+      var lm = new THREE.LineBasicMaterial({ color:WHITE, transparent:true, opacity:.5 });
+      var m = new THREE.Mesh(big ? rgeo : geo, fm);
+      m.position.set(x, y, z);
+      m.add(new THREE.LineSegments(big ? regeo : egeo, lm));
+      tilt.add(m);
+      var fe = { m:fm, o:1 }, le = { m:lm, o:.5 };
+      mats.push(fe, le);
+      cubes.push({ fm:fm, le:le, layer:layer, p:m.position });
+      return cubes.length - 1;
+    }
+    var layers = XS.map(function(x, L){
+      var ids = [];
+      OFF.forEach(function(y){ OFF.forEach(function(z){ ids.push(addCube(x, y, z, L, false)); }); });
+      return ids;
+    });
+    var resultId = addCube(RX, 0, 0, 3, true);
+
+    var links = [];
+    function link(a, b, st){ links.push({ a:cubes[a].p, b:cubes[b].p, stage:st }); }
+    [0, 1].forEach(function(L){
+      layers[L].forEach(function(id, k){
+        link(id, layers[L + 1][k], L);
+        link(id, layers[L + 1][(k + 4) % 9], L);
+      });
+    });
+    layers[2].forEach(function(id){ link(id, resultId, 2); });
+
+    var lpos = [];
+    links.forEach(function(l){ lpos.push(l.a.x, l.a.y, l.a.z, l.b.x, l.b.y, l.b.z); });
+    var lgeo = new THREE.BufferGeometry();
+    lgeo.setAttribute('position', new THREE.Float32BufferAttribute(lpos, 3));
+    var llm = new THREE.LineBasicMaterial({ color:TEAL, transparent:true, opacity:.14 });
+    tilt.add(new THREE.LineSegments(lgeo, llm));
+    var lle = { m:llm, o:.14 }; mats.push(lle);
+
+    var dpos = new Float32Array(links.length * 3), dcol = new Float32Array(links.length * 3);
+    var dgeo = new THREE.BufferGeometry();
+    dgeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+    dgeo.setAttribute('color', new THREE.BufferAttribute(dcol, 3));
+    var dm = new THREE.PointsMaterial({ size:6, vertexColors:true, map:DOT, transparent:true,
+                                        depthWrite:false, blending:THREE.AdditiveBlending });
+    tilt.add(new THREE.Points(dgeo, dm));
+    mats.push({ m:dm, o:1 });
+
+    var CYC = 2.6, STG = .58, HOP = .46, t0 = -9, armed = false;
+    return { group:g, mats:mats, update:function(T, S){
+      var p = S.fire;
+      tilt.rotation.set(.26 + Math.sin(T * .16) * .025, .4 + Math.sin(T * .11) * .05, 0);
+
+      if (p > .55 && !armed){ t0 = T; armed = true; }
+      if (p < .2) armed = false;
+      var ph = (T - t0) % CYC;
+
+      cubes.forEach(function(q){
+        var x = ph - q.layer * STG, last = q.layer === 3;
+        var on = x < 0 ? 0 : Math.exp(-x / (last ? .8 : .34)) * Math.min(1, x / .06);
+        q.fm.emissiveIntensity = (last ? .09 : .02) + on * (last ? 1.5 : .75) + p * .12;
+        q.le.o = .4 + on * .55 + p * .1;
+      });
+
+      for (var i = 0; i < links.length; i++){
+        var L = links[i], k = (ph - L.stage * STG - .12) / HOP, v = 0, t = 0;
+        if (k > 0 && k < 1){ t = k * k * (3 - 2 * k); v = Math.sin(Math.PI * k); }
+        dpos[i * 3]     = L.a.x + (L.b.x - L.a.x) * t;
+        dpos[i * 3 + 1] = L.a.y + (L.b.y - L.a.y) * t;
+        dpos[i * 3 + 2] = L.a.z + (L.b.z - L.a.z) * t;
+        dcol[i * 3] = .76 * v; dcol[i * 3 + 1] = v; dcol[i * 3 + 2] = .95 * v;
+      }
+      dgeo.attributes.position.needsUpdate = true;
+      dgeo.attributes.color.needsUpdate = true;
+      lle.o = .12 + p * .2;
+    }};
+  }
+
+  /* ---------------- 4 · the broker ----------------
+     a settlement gate. two rings hold it in space from any angle, and six
+     blades sweep across the middle in one move: both legs or neither. */
+  function broker(r){
+    var g = new THREE.Group(), mats = [];
+
+    /* the rings: genuinely three dimensional, so the gate still reads when the
+       camera comes round to its edge */
+    function ring(rad, tube, col, op){
+      var m = new THREE.MeshBasicMaterial({ color:col, transparent:true, opacity:op, depthWrite:false });
+      var t = new THREE.Mesh(new THREE.TorusGeometry(rad, tube, 8, 120), m);
+      g.add(t); mats.push({ m:m, o:op });
+      return t;
+    }
+    var ringA = ring(r * 1.2, r * .017, WHITE, .8);
+    var ringB = ring(r * .98, r * .013, TEAL, .6);
+    ringB.rotation.x = 1.08;
+
+    var dash = dashedRing(r * 1.42, WHITE, .3, 7, 6.5);
+    g.add(dash.line); mats.push({ m:dash.mat, o:.3 });
+
+    /* one blade: a tapered plate hinged at the rim, tip toward the middle */
+    var LEN = r * 1.06, W0 = r * .3, W1 = r * .085, BN = 6;
+    var bgeo = new THREE.BufferGeometry();
+    bgeo.setAttribute('position', new THREE.Float32BufferAttribute([
+      0, -W0, 0,  LEN, -W1, 0,  LEN, W1, 0,
+      0, -W0, 0,  LEN,  W1, 0,    0, W0, 0
+    ], 3));
+    bgeo.computeVertexNormals();
+    var ogeo = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, -W0, 0), new THREE.Vector3(LEN, -W1, 0),
+      new THREE.Vector3(LEN, -W1, 0), new THREE.Vector3(LEN, W1, 0),
+      new THREE.Vector3(LEN, W1, 0), new THREE.Vector3(0, W0, 0),
+      new THREE.Vector3(0, W0, 0), new THREE.Vector3(0, -W0, 0)
+    ]);
+
+    var blades = [], bmats = [];
+    for (var k = 0; k < BN; k++){
+      var th = k / BN * Math.PI * 2;
+      var pivot = new THREE.Object3D();
+      pivot.position.set(Math.cos(th) * r * 1.06, Math.sin(th) * r * 1.06, (k - (BN - 1) / 2) * r * .016);
+      var fm = new THREE.MeshStandardMaterial({ color:0x081820, metalness:.4, roughness:.45,
+                                                emissive:0x2FB8AC, emissiveIntensity:.02,
+                                                transparent:true, opacity:.94, side:THREE.DoubleSide });
+      var lm = new THREE.LineBasicMaterial({ color:WHITE, transparent:true, opacity:.65 });
+      var m = new THREE.Mesh(bgeo, fm);
+      m.add(new THREE.LineSegments(ogeo, lm));
+      pivot.add(m);
+      g.add(pivot);
+      mats.push({ m:fm, o:.94 }, { m:lm, o:.65 });
+      bmats.push(fm);
+      blades.push({ pivot:pivot, base:th + Math.PI });
+    }
+
+    /* the instant itself */
+    var cm = new THREE.MeshBasicMaterial({ color:0xF2FFFC, transparent:true, opacity:0,
+                                           depthWrite:false, blending:THREE.AdditiveBlending, fog:false });
+    var core = new THREE.Mesh(new THREE.SphereGeometry(r * .22, 20, 16), cm);
+    g.add(core); mats.push({ m:cm, o:1 });
+
+    var OPEN = .95;
+    return { group:g, mats:mats, yaw:true, update:function(T, S){
+      var c = clamp01(S.close);
+      ringA.rotation.z = T * .28;
+      ringB.rotation.z = T * -.36;
+      blades.forEach(function(b, i){
+        /* shut is shut: every blade lands on the same frame */
+        b.pivot.rotation.z = b.base + OPEN * (1 - c);
+        bmats[i].emissiveIntensity = .02 + c * .24 + S.flash * .7;
+      });
+      cm.opacity = S.flash * .75;
+      core.scale.setScalar(.42 + S.flash * 1.1);
+      mats[0].o = .7 + c * .3;
+      mats[2].o = .5 + c * .45;
+    }};
+  }
+
+  /* ---------------- the conduits ----------------
+     a glowing tube with a crisp core, and a burst of motes that runs it in
+     either direction. the motes are the money; the tube is only the road. */
+  var SAMP = 121;
+  function conduit(ia, ib, bow, fwd, rev){
+    var A0 = NODE[ia].p, B0 = NODE[ib].p;
+    var dir = B0.clone().sub(A0).normalize();
+    var a = A0.clone().addScaledVector(dir,  NODE[ia].r * 1.08);
+    var b = B0.clone().addScaledVector(dir, -NODE[ib].r * 1.08);
+    var n = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0));
+    if (n.lengthSq() < 1e-6) n.set(1, 0, 0);
+    n.normalize();
+    var bn = new THREE.Vector3().crossVectors(dir, n).normalize();
+    var mid = a.clone().add(b).multiplyScalar(.5).addScaledVector(n, bow);
+    var curve = new THREE.QuadraticBezierCurve3(a, mid, b);
+
+    /* sampled once: a quadratic is cheap, but not 240 times a frame */
+    var sx = new Float32Array(SAMP), sy = new Float32Array(SAMP), sz = new Float32Array(SAMP), i;
+    for (i = 0; i < SAMP; i++){
+      var pt = curve.getPoint(i / (SAMP - 1));
+      sx[i] = pt.x; sy[i] = pt.y; sz[i] = pt.z;
+    }
+
+    var tm = new THREE.MeshBasicMaterial({ color:TEAL, transparent:true, opacity:.07,
+                                           depthWrite:false, blending:THREE.AdditiveBlending });
+    scene.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 60, 2.6, 7, false), tm));
+    var cmat = new THREE.LineBasicMaterial({ color:TEAL, transparent:true, opacity:.18 });
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(60)), cmat));
+
+    var MOTES = 84, lag = [], ox = [], oy = [];
+    var mpos = new Float32Array(MOTES * 3), mcol = new Float32Array(MOTES * 3);
+    for (i = 0; i < MOTES; i++){
+      lag.push(Math.pow(Math.random(), .75) * .44);
+      ox.push((Math.random() - .5) * 13);
+      oy.push((Math.random() - .5) * 13);
+    }
+    var mg = new THREE.BufferGeometry();
+    mg.setAttribute('position', new THREE.BufferAttribute(mpos, 3));
+    mg.setAttribute('color', new THREE.BufferAttribute(mcol, 3));
+    var mm = new THREE.PointsMaterial({ size:8.5, vertexColors:true, map:DOT, transparent:true,
+                                        depthWrite:false, blending:THREE.AdditiveBlending });
+    var pnts = new THREE.Points(mg, mm); pnts.frustumCulled = false; scene.add(pnts);
+
+    /* the name of the leg, above the road going out and below it coming back */
+    var mp = curve.getPoint(.5);
+    var tagF = plate({ title:fwd, size:10.5, ls:2, w:230, h:36 });
+    var tagR = plate({ title:rev, size:10.5, ls:2, w:230, h:36,
+                       color:rev === 'repayment + fee' ? '#E7B472' : '#BFE4E0' });
+    tagF.mesh.position.copy(mp).addScaledVector(bn, 34);
+    tagR.mesh.position.copy(mp).addScaledVector(bn, -34);
+    scene.add(tagF.mesh); scene.add(tagR.mesh);
+
+    var teal = new THREE.Color(TEAL), amber = new THREE.Color(AMBER), tc = new THREE.Color();
+
+    return { billboard:[tagF.mesh, tagR.mesh], update:function(T, F){
+      var act = F.act;
+      tc.copy(teal).lerp(amber, F.tint);
+      for (var k = 0; k < MOTES; k++){
+        var u = F.p * 1.44 - lag[k];
+        var v = u <= 0 || u >= 1 ? 0 : act * clamp01(u * 8) * clamp01((1 - u) * 5);
+        if (v <= 0){ mcol[k * 3] = mcol[k * 3 + 1] = mcol[k * 3 + 2] = 0; continue; }
+        var s = F.dir > 0 ? u : 1 - u;
+        var f = s * (SAMP - 1), i0 = f | 0, i1 = i0 + 1 > SAMP - 1 ? SAMP - 1 : i0 + 1, t = f - i0;
+        mpos[k * 3]     = sx[i0] + (sx[i1] - sx[i0]) * t + n.x * ox[k] + bn.x * oy[k];
+        mpos[k * 3 + 1] = sy[i0] + (sy[i1] - sy[i0]) * t + n.y * ox[k] + bn.y * oy[k];
+        mpos[k * 3 + 2] = sz[i0] + (sz[i1] - sz[i0]) * t + n.z * ox[k] + bn.z * oy[k];
+        mcol[k * 3] = tc.r * v; mcol[k * 3 + 1] = tc.g * v; mcol[k * 3 + 2] = tc.b * v;
+      }
+      mg.attributes.position.needsUpdate = true;
+      mg.attributes.color.needsUpdate = true;
+      tm.opacity = .09 + act * .17;
+      cmat.opacity = .26 + act * .44;
+      tagF.mat.opacity = F.dir > 0 ? act : 0;
+      tagR.mat.opacity = F.dir < 0 ? act : 0;
+      tagF.mesh.visible = tagF.mat.opacity > .004;
+      tagR.mesh.visible = tagR.mat.opacity > .004;
+      pnts.visible = act > .002;
+    }};
+  }
+
+  /* ---------------- the void has a volume ---------------- */
+  var DUST = null;
+  (function dustField(){
+    var N = 900, pos = new Float32Array(N * 3), col = new Float32Array(N * 3);
+    for (var i = 0; i < N; i++){
+      pos[i * 3]     = (Math.random() - .5) * 3000;
+      pos[i * 3 + 1] = (Math.random() - .5) * 1500;
+      pos[i * 3 + 2] = (Math.random() - .5) * 3000;
+      var v = .06 + Math.pow(Math.random(), 2.2) * .5;
+      col[i * 3] = v * .72; col[i * 3 + 1] = v; col[i * 3 + 2] = v * .95;
+    }
+    var g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    var m = new THREE.PointsMaterial({ size:3.4, vertexColors:true, map:DOT, transparent:true,
+                                       depthWrite:false, blending:THREE.AdditiveBlending, opacity:.85 });
+    DUST = new THREE.Points(g, m); DUST.frustumCulled = false;
+    scene.add(DUST);
   })();
 
-  /* the shapes arrive on the same beats the discs used to: satellites 1280 ms, centre 1820 ms */
-  function outBack(x){ var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
-  function clamp01(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
-  function revealAt(i, e){
-    var hub = i === 2, from = hub ? .22 : .34;
-    var start = hub ? 1820 : 1280 + 140 * (i === 3 ? 2 : i), dur = hub ? 980 : 820;
-    var x = clamp01((e - start) / dur);
-    return { s:from + (1 - from) * outBack(x), a:clamp01((e - start) / (dur * .55)) };
-  }
-  function pulseAt(t){
-    var out = [0, 0, 0, 0];
-    BEATS.forEach(function(b){
-      var end = b.at + b.dur, targets = b.extra ? [b.to, b.extra.to] : [b.to];
-      [t, t + LOOP].forEach(function(tt){
-        var dt = tt - (end - 60);
-        if (dt < 0 || dt >= 1300) return;
-        var v = dt < 200 ? dt / 200 : 1 - (dt - 200) / 1100;
-        targets.forEach(function(k){ out[k] = Math.max(out[k], v); });
-      });
-    });
-    return out;
-  }
+  /* ---------------- assembly ---------------- */
+  var NODES = [lenders(NODE[0].r), pools(NODE[1].r), protocol(NODE[2].r), broker(NODE[3].r)];
+  NODES.forEach(function(n, i){ n.group.position.copy(NODE[i].p); scene.add(n.group); });
 
-  var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var revealT0 = null, loopT0 = null, visible = true;
-  var SHOWN = [0,1,2,3].map(function(){ return { s:1, a:1 }; });
+  var CONDUIT = [
+    conduit(0, 1,  70, 'deposit',    'to the lenders'),
+    conduit(1, 2, -80, 'flash loan', 'principal + yield'),
+    conduit(2, 3,  64, 'cash leg',   'repayment + fee')
+  ];
 
-  if (N3D){
-    if (reduced){
-      N3D.frame(0, SHOWN, [0, 0, 0, 0]);
-    } else {
-      requestAnimationFrame(function spin(now){
-        requestAnimationFrame(spin);
-        if (!visible) return;
-        var e = revealT0 === null ? 0 : now - revealT0;
-        N3D.frame(now / 1000,
-                  [0,1,2,3].map(function(i){ return revealAt(i, e); }),
-                  loopT0 === null ? [0, 0, 0, 0] : pulseAt((now - loopT0) % LOOP));
-      });
+  /* the in-scene half of each node label. it yaws to face you but keeps its
+     tilt, so it sits in the room rather than on the glass */
+  var LABPLATE = ['Lenders|worldwide, idle capital',
+                  'Curated pools|curators set the limits',
+                  'Our protocol|advances 100 % of the price',
+                  'The broker|settles atomically'].map(function(s, i){
+    var bits = s.split('|');
+    var pl = plate({ title:bits[0], sub:bits[1], size:i === 2 ? 17 : 15, w:460, h:112,
+                     color:i === 2 ? '#FFFFFF' : '#EFF7F9', subColor:i === 2 ? '#9FD8D1' : '#94B6BF' });
+    pl.mesh.position.copy(NODE[i].p).add(new THREE.Vector3(0, NODE[i].ly, 0));
+    pl.mesh.rotation.x = -.17;
+    scene.add(pl.mesh);
+    return pl;
+  });
+
+  var BILL = CONDUIT.reduce(function(a, c){ return a.concat(c.billboard); },
+                            NODES[1].billboard ? NODES[1].billboard.slice() : []);
+  var DOMLAB = Array.prototype.slice.call(labsEl ? labsEl.querySelectorAll('.lab') : []);
+
+  /* ---------------- the state anime.js writes into ---------------- */
+  var ST = { charge:0, shed:0, level:0, yield:0, fire:0, close:0, flash:0,
+             hold:[0, 0, 0, 0], right:new THREE.Vector3(1, 0, 0) };
+  var FLOW = [0, 1, 2].map(function(){ return { p:0, dir:1, act:0, tint:0 }; });
+
+  var TGT = { wide:new THREE.Vector3(-10, 0, -20),
+              lenders:NODE[0].p, pools:NODE[1].p, protocol:NODE[2].p, broker:NODE[3].p };
+
+  /* the lap. az ends 360 past where it began, so the loop seams */
+  var CK = [
+    { t:0,     az:-34, el: 12, rad: 860, tgt:'wide'     },
+    { t:2600,  az:  8, el: 12, rad: 470, tgt:'lenders'  },
+    { t:5600,  az: 46, el:  4, rad: 330, tgt:'lenders'  },
+    { t:8600,  az:100, el: -7, rad: 285, tgt:'pools'    },
+    { t:11600, az:168, el:  6, rad: 470, tgt:'protocol' },
+    { t:14200, az:228, el: -9, rad: 300, tgt:'protocol' },
+    { t:16800, az:276, el:  4, rad: 300, tgt:'broker'   },
+    { t:19400, az:314, el: 13, rad: 560, tgt:'broker'   },
+    { t:22000, az:326, el: 12, rad: 860, tgt:'wide'     }
+  ];
+
+  /* ---------------- the frame ---------------- */
+  var TV = new THREE.Vector3(), PV = new THREE.Vector3(),
+      CAMR = new THREE.Vector3(), WP = new THREE.Vector3();
+
+  function draw(T){
+    for (var i = 0; i < 4; i++){
+      /* a node is "held" when the camera has come to rest on it and close in.
+         that one number drives the whole label handover, so the type sharpens
+         exactly when the shot settles and never needs its own cue. */
+      TV.set(RIG.tx, RIG.ty, RIG.tz);
+      ST.hold[i] = clamp01(1 - NODE[i].p.distanceTo(TV) / 210) * clamp01((820 - RIG.rad) / 380);
     }
-  }
+    place(T);
+    ST.right = CAMR.set(1, 0, 0).applyQuaternion(cam.quaternion);
 
-  if (!A || reduced) return;
-
-  var tl = null, loop = null;
-
-  /* ---------- the arrival ---------- */
-  function build(){
-    tl = A.createTimeline({ autoplay:false, defaults:{ ease:'outQuad' }, onComplete:startLoop });
-
-    /* 1 · the page falls into the void, then the title arrives (css .fade) */
-    tl.add(voidbg, { opacity:[0, 1], duration:900, ease:'inOutQuad' }, 0)
-      .add(dust,   { opacity:[0, function(el){ return el.style.opacity || .2; }], duration:1400,
-                     delay:A.stagger(9) }, 500);
-
-    /* 2 · the shapes resolve out of the dark, the webgl layer runs that
-       on its own clock, on the same beats */
-
-    /* 3 · the centre ignites and claims the middle of the frame */
-    tl.add(glows[2], { opacity:[0, .34], duration:900 }, 1900);
-
-    /* 4 · the wires snap out of the hub */
-    tl.add(wires, { scaleX:[0, 1], duration:620, ease:'outQuad', delay:A.stagger(110) }, 2420)
-      .add(labs,  { opacity:[0, 1], duration:640, delay:A.stagger(90) }, 2700)
-      ;   /* step names stay dark until their leg actually carries something */
-  }
-
-  /* ---------- the transaction, on repeat ---------- */
-  function leg(t, b, link, dir, to){
-    var pkt = pkts[link], len = LEN[link], tip = pkt.querySelector('i');
-    t.add(pkt, {
-      x: dir > 0 ? [0, len] : [len, 0],
-      duration: b.dur, ease:'inOutSine',
-      onBegin: function(){ pkt.className = 'pkt' + (dir < 0 ? ' rev' : '') + (b.back ? ' back' : ''); }
-    }, b.at)
-     .add(tip, { opacity:[0, 1], duration:220, ease:'outQuad' }, b.at)
-     .add(tip, { opacity:[1, 0], duration:280, ease:'inQuad' }, b.at + b.dur - 280)
-     .add(wires[link], { opacity:[.2, .7], duration:220 }, b.at)
-     .add(wires[link], { opacity:[.7, .2], duration:520 }, b.at + b.dur - 120)
-     /* the node it reaches answers by brightening from within */
-     .add(glows[to], { opacity:[0, .8], duration:200 }, b.at + b.dur - 60)
-     .add(glows[to], { opacity:[.8, to === 2 ? .34 : 0], duration:900 }, b.at + b.dur + 140);
-  }
-
-  function startLoop(){
-    loopT0 = performance.now();
-    A.utils.remove(pkts.concat(q('.pkt i'), wires, glows, legs));
-    loop = A.createTimeline({ loop:true, duration:LOOP, defaults:{ ease:'outQuad' } });
-
-    BEATS.forEach(function(b){
-      leg(loop, b, b.link, b.dir, b.to);
-      if (b.extra) leg(loop, b, b.extra.link, b.extra.dir, b.extra.to);
-      loop.add(legs[b.leg], { opacity:[0, 1], duration:260, ease:'outQuad' }, b.at)
-          .add(legs[b.leg], { opacity:[1, 0], duration:280, ease:'inQuad' }, b.at + b.dur - 60);
-
-      /* the repayment lands: the hub flares before it pays everyone back */
-      if (b.flash){
-        loop.add(glows[2], { opacity:[.34, .9], duration:180 }, b.at + b.dur - 40)
-            .add(glows[2], { opacity:[.9, .34], duration:900 }, b.at + b.dur + 160);
-      }
+    NODES.forEach(function(n, k){
+      if (n.yaw) n.group.rotation.y = Math.atan2(cam.position.x - n.group.position.x,
+                                                 cam.position.z - n.group.position.z);
+      n.update(T, ST);
     });
+    CONDUIT.forEach(function(c, k){ c.update(T, FLOW[k]); });
+    if (DUST) DUST.rotation.y = T * .006;
+
+    for (i = 0; i < BILL.length; i++){
+      var bb = BILL[i];
+      bb.quaternion.copy(cam.quaternion);
+      var bd = cam.position.distanceTo(bb.getWorldPosition(WP));
+      bb.scale.setScalar(Math.max(.6, Math.min(1.8, bd / 400)));
+    }
+
+    /* the plate hands the name over to real html as the camera settles */
+    var w = host.clientWidth, h = host.clientHeight;
+    for (i = 0; i < 4; i++){
+      var hold = ST.hold[i], pm = LABPLATE[i];
+      var far = cam.position.distanceTo(pm.mesh.position);
+      pm.mat.opacity = clamp01(1 - hold * 1.9) * .92 * clamp01((1500 - far) / 850);
+      pm.mesh.visible = pm.mat.opacity > .004;
+      pm.mesh.scale.setScalar(Math.max(.75, Math.min(1.45, far / 560)));
+      pm.mesh.rotation.y = Math.atan2(cam.position.x - pm.mesh.position.x,
+                                      cam.position.z - pm.mesh.position.z);
+      var el = DOMLAB[i], dom = clamp01((hold - .45) * 2.2);
+      if (!el) continue;
+      if (dom < .01){ el.style.opacity = 0; continue; }
+      PV.copy(NODE[i].p).setY(NODE[i].p.y + NODE[i].ly).project(cam);
+      if (PV.z > 1){ el.style.opacity = 0; continue; }
+      el.style.opacity = dom;
+      el.style.transform = 'translate3d(' + ((PV.x * .5 + .5) * w).toFixed(1) + 'px,' +
+                           ((-PV.y * .5 + .5) * h).toFixed(1) + 'px,0) translate(-50%,-50%) scale(' +
+                           (.92 + dom * .08).toFixed(3) + ')';
+    }
+
+    R3.render(scene, cam);
   }
 
-  function arm(){
-    var U = A.utils;
-    U.set(voidbg, { opacity:0 });
-    U.set(dust, { opacity:0 });
-    U.set(wires, { scaleX:0, opacity:.2 });
-    U.set(pkts, { x:0 });
-    U.set(q('.pkt i'), { opacity:0 });
-    U.set(glows, { opacity:0 });
-    U.set(labs.concat(legs), { opacity:0 });
-    pkts.forEach(function(p){ p.className = 'pkt'; });
+  fit();
+  if ('ResizeObserver' in window) new ResizeObserver(fit).observe(host);
+  else window.addEventListener('resize', fit);
+
+  /* ---------------- reduced motion: one frame, no lap ---------------- */
+  if (reduced || !A){
+    ST.charge = 1; ST.level = 1; ST.yield = .5; ST.fire = .35; ST.close = .25;
+    RIG.az = 50; RIG.el = 14; RIG.rad = 860;
+    RIG.tx = TGT.wide.x; RIG.ty = TGT.wide.y; RIG.tz = TGT.wide.z;
+    host.style.opacity = 1;
+    requestAnimationFrame(function(){ fit(); draw(0); });
+    return;
+  }
+
+  /* ---------------- the lap, on repeat ---------------- */
+  var voidbg = s3.querySelector('.void');
+  var tl = null, visible = false, raf = 0;
+
+  function legBeat(li, dir, at, dur, tint){
+    var F = FLOW[li];
+    tl.add(F, { p:[0, 1], duration:dur, ease:'inOutSine',
+                onBegin:function(){ F.dir = dir; F.tint = tint; } }, at)
+      .add(F, { act:[0, 1], duration:300, ease:'outQuad' }, at)
+      .add(F, { act:[1, 0], duration:450, ease:'inQuad' }, at + dur - 300);
+  }
+
+  function build(){
+    tl = A.createTimeline({ loop:true, duration:TOTAL, defaults:{ ease:'inOutSine' } });
+
+    for (var i = 1; i < CK.length; i++){
+      var a = CK[i - 1], b = CK[i], ta = TGT[a.tgt], tb = TGT[b.tgt];
+      tl.add(RIG, { az:[a.az, b.az], el:[a.el, b.el], rad:[a.rad, b.rad],
+                    tx:[ta.x, tb.x], ty:[ta.y, tb.y], tz:[ta.z, tb.z],
+                    duration:b.t - a.t, ease:'inOutQuad' }, a.t);
+    }
+
+    /* capital rains in out of the dark and the globe takes it on */
+    tl.add(ST, { charge:[0, 1], duration:3400, ease:'inOutQuad' }, 600);
+    /* and gives it away again */
+    tl.add(ST, { shed:[0, 1], duration:2800, ease:'inOutQuad' }, 4800);
+    legBeat(0,  1,  4600, 3000, 0);
+
+    /* the pool fills, and stops at the line the curators drew */
+    tl.add(ST, { level:[0, 1], duration:3000, ease:'outQuad' }, 5800);
+    /* the flash loan empties it again */
+    tl.add(ST, { level:[1, .12], duration:2400, ease:'inOutQuad' }, 8800);
+    legBeat(1,  1,  8800, 2600, 0);
+
+    /* the lattice runs its pass, and the result leaves for the broker */
+    tl.add(ST, { fire:[0, 1], duration:450, ease:'outQuad' }, 11300);
+    tl.add(ST, { fire:[1, .15], duration:1800, ease:'inQuad' }, 13000);
+    legBeat(2,  1, 12500, 2300, 0);
+
+    /* both legs or neither: the gate shuts on one frame */
+    tl.add(ST, { close:[0, 1], duration:240, ease:'outExpo' }, 14860);
+    tl.add(ST, { flash:[0, 1], duration:130, ease:'outQuad' }, 14940);
+    tl.add(ST, { flash:[1, 0], duration:1000, ease:'inQuad' }, 15080);
+    tl.add(ST, { yield:[0, 1], duration:600, ease:'outQuad' }, 15200);
+    tl.add(ST, { close:[1, 0], duration:900, ease:'inOutQuad' }, 16250);
+    legBeat(2, -1, 15600, 1900, 1);
+
+    /* and everything runs home */
+    tl.add(ST, { fire:[.15, 1], duration:400, ease:'outQuad' }, 17400);
+    tl.add(ST, { fire:[1, 0], duration:1600, ease:'inQuad' }, 18200);
+    legBeat(1, -1, 17800, 1800, 0);
+    tl.add(ST, { level:[.12, 1], duration:1900, ease:'outQuad' }, 17900);
+
+    legBeat(0, -1, 19900, 1900, 0);
+    tl.add(ST, { shed:[1, 0], duration:1800, ease:'inOutQuad' }, 20000);
+    tl.add(ST, { level:[1, 0], duration:1700, ease:'inOutQuad' }, 20000);
+    tl.add(ST, { yield:[1, 0], duration:800, ease:'inQuad' }, 21000);
   }
 
   function play(){
-    if (loop){ loop.pause(); loop = null; }
-    if (tl){ tl.pause(); }
-    A.utils.remove([wires, pkts, q('.pkt i'), glows, labs, legs, dust, [voidbg]].reduce(function(a, b){ return a.concat(b); }, []));
-    revealT0 = performance.now(); loopT0 = null;
-    s3.classList.remove('play');
-    void s3.offsetWidth;
-    s3.classList.add('play');
-    arm();
+    if (tl){ tl.pause(); tl.revert && tl.revert(); tl = null; }
+    A.utils.remove(RIG); A.utils.remove(ST); FLOW.forEach(function(F){ A.utils.remove(F); });
+    A.utils.remove(host); A.utils.remove(voidbg);
+
+    ST.charge = ST.shed = ST.level = ST.yield = ST.fire = ST.close = ST.flash = 0;
+    FLOW.forEach(function(F){ F.p = 0; F.act = 0; F.dir = 1; F.tint = 0; });
+    var k0 = CK[0], t0 = TGT[k0.tgt];
+    RIG.az = k0.az; RIG.el = k0.el; RIG.rad = k0.rad;
+    RIG.tx = t0.x; RIG.ty = t0.y; RIG.tz = t0.z;
+
+    s3.classList.remove('play'); void s3.offsetWidth; s3.classList.add('play');
+    A.animate(voidbg, { opacity:[0, 1], duration:900, ease:'inOutQuad' });
+    A.animate(host,   { opacity:[0, 1], duration:1400, ease:'outQuad', delay:250 });
+
     build();
     tl.play();
   }
 
-  s3.classList.add('armed');
+  function loop(now){
+    raf = requestAnimationFrame(loop);
+    if (visible) draw(now / 1000);
+  }
+  raf = requestAnimationFrame(loop);
 
   if ('IntersectionObserver' in window){
     new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ visible = e.isIntersecting; if (e.isIntersecting) play(); });
-    }, { threshold:.3 }).observe(s3);
+      entries.forEach(function(e){
+        visible = e.isIntersecting;
+        if (e.isIntersecting) play();
+        else if (tl) tl.pause();
+      });
+    }, { threshold:.25 }).observe(s3);
   } else {
-    play();
+    visible = true; play();
   }
 
+  /* r replays the lap, as it always did */
   document.addEventListener('keydown', function(e){
     if (e.key === 'r' && s3.getBoundingClientRect().top < window.innerHeight * .6) play();
   });

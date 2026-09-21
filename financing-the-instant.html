@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Financing the Instant · pitch</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap">
+<style>
+:root{color-scheme:light}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark}}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<style>
+:root{
+  --ground:#FBFCFD; --surface:#EDF3F4; --surface-2:#E4EEEE; --band:#D6EBE9;
+  --ink:#0B1F3A; --ink-soft:#44576B; --muted:#6B7C8E;
+  --accent:#0E7C7B; --accent-ink:#0E7C7B; --back:#A8661B; --back-soft:#F2E4D2;
+  --line:#D2DFE2;
+  --st-top:#EEF4F5; --st-bot:#FAFCFC; --grid:#CFE0E3; --vg:rgba(11,31,58,.10);
+  --d-face:#F2F8F9; --d-wall-a:#BFD2D7; --d-wall-b:#E4EEF0; --d-edge:#A9C1C8;
+  --h-wall-a:#08514F; --h-wall-b:#14918E; --rail-c:#9FC0C3; --ret-c:#D9A45E;
+  --shade:rgba(11,31,58,.13); --tokglow:rgba(14,124,123,.30);
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#08141D; --surface:#0D1C26; --surface-2:#122430; --band:#10312F;
+    --ink:#E7EFF3; --ink-soft:#B4C6D0; --muted:#8299A6;
+    --accent:#2FB8AC; --accent-ink:#5FD3C7; --back:#E0A552; --back-soft:#2E2213;
+    --line:#1E3441;
+    --st-top:#0B1B25; --st-bot:#07121A; --grid:#16303C; --vg:rgba(0,0,0,.40);
+    --d-face:#15323F; --d-wall-a:#071820; --d-wall-b:#1D4353; --d-edge:#2C5768;
+    --h-wall-a:#0C5A55; --h-wall-b:#39C6B9; --rail-c:#1F4453; --ret-c:#8A6230;
+    --shade:rgba(0,0,0,.42); --tokglow:rgba(47,184,172,.34);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#08141D; --surface:#0D1C26; --surface-2:#122430; --band:#10312F;
+  --ink:#E7EFF3; --ink-soft:#B4C6D0; --muted:#8299A6;
+  --accent:#2FB8AC; --accent-ink:#5FD3C7; --back:#E0A552; --back-soft:#2E2213;
+  --line:#1E3441;
+  --st-top:#0B1B25; --st-bot:#07121A; --grid:#16303C; --vg:rgba(0,0,0,.40);
+  --d-face:#15323F; --d-wall-a:#071820; --d-wall-b:#1D4353; --d-edge:#2C5768;
+  --h-wall-a:#0C5A55; --h-wall-b:#39C6B9; --rail-c:#1F4453; --ret-c:#8A6230;
+  --shade:rgba(0,0,0,.42); --tokglow:rgba(47,184,172,.34);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ground); color:var(--ink); font-family:var(--body);
+  margin:0; padding:0; -webkit-font-smoothing:antialiased;
+}
+
+.sec{
+  display:flex; flex-direction:column;
+  padding-block:clamp(64px,9vw,130px);
+  padding-left:clamp(20px,5vw,72px); padding-right:clamp(20px,5vw,72px);
+  border-bottom:1px solid var(--line);
+}
+#s1{padding-block:clamp(72px,11vw,150px)}
+
+/* blocks arrive as they come into view, only once JS has armed them,
+   so the page reads in full without scripts */
+.js-reveal .rv{opacity:0; transform:translateY(18px)}
+.js-reveal .rv.in{
+  opacity:1; transform:none;
+  transition:opacity .65s cubic-bezier(.22,.7,.3,1) var(--rd,0s),
+             transform .65s cubic-bezier(.22,.7,.3,1) var(--rd,0s);
+}
+.sec--alt{background:var(--surface)}
+.inner{width:100%; max-width:1180px; margin:0 auto}
+.brand{font-family:"Michroma",var(--mono); font-size:28.6px; letter-spacing:.14em; color:var(--accent-ink); margin:0 0 28px; text-align:center}
+
+.eyebrow{
+  font-family:var(--mono); font-size:clamp(10px,.92vw,13px); font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--accent-ink); margin:0 0 clamp(14px,1.6vw,22px);
+}
+h1{
+  font-family:var(--display); font-size:clamp(27px,3.5vw,50px); line-height:1.13; font-weight:600;
+  letter-spacing:-.012em; margin:0; text-wrap:balance; color:var(--ink); max-width:900px;
+}
+h1 em{font-style:normal; color:var(--accent-ink)}
+
+/* ---- tiles ---- */
+.tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(10px,1.3vw,20px); margin-top:clamp(26px,3.4vw,48px)}
+.tiles.tiles--two{grid-template-columns:repeat(2,1fr)}
+.tiles.tiles--three{grid-template-columns:repeat(3,1fr)}
+.tilehead{margin-top:clamp(26px,3.2vw,46px)}
+.tilehead + .tiles{margin-top:0}
+.tile{background:var(--surface-2); border-radius:10px; padding:clamp(13px,1.5vw,22px)}
+.sec--alt .tile{background:var(--ground)}
+.tile .fig{
+  font-family:var(--mono); font-size:clamp(22px,2.6vw,38px); font-weight:500; letter-spacing:-.02em;
+  color:var(--accent-ink); line-height:1; font-variant-numeric:tabular-nums;
+}
+.tile .cap{font-size:clamp(12px,1.05vw,15px); font-weight:600; line-height:1.35; margin-top:clamp(8px,.9vw,13px); color:var(--ink)}
+.tile .sub{font-family:var(--mono); font-size:clamp(9.5px,.78vw,11px); line-height:1.4; margin-top:6px; color:var(--muted)}
+
+/* ---- columns ---- */
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:clamp(22px,3.4vw,58px); margin-top:clamp(26px,3.2vw,46px)}
+.colhead{display:flex; align-items:center; gap:11px; margin-bottom:clamp(10px,1.2vw,16px)}
+.dot{
+  width:clamp(20px,1.9vw,27px); height:clamp(20px,1.9vw,27px); flex:none; border-radius:50%;
+  background:var(--accent); display:grid; place-items:center; color:var(--ground);
+  font-family:var(--mono); font-size:clamp(11px,.95vw,13px); font-weight:600;
+}
+.colhead h2{font-size:clamp(15px,1.3vw,19px); font-weight:600; margin:0; line-height:1.25; color:var(--ink)}
+.colbody{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:clamp(8px,.85vw,12px)}
+.colbody li{font-size:clamp(13px,1.02vw,15.5px); line-height:1.45; color:var(--ink-soft); padding-left:14px; position:relative}
+.colbody li::before{content:""; position:absolute; left:0; top:.62em; width:5px; height:5px; border-radius:50%; background:var(--accent)}
+.colbody b{color:var(--ink); font-weight:600}
+
+.band{
+  background:var(--band); border-radius:8px; padding:clamp(11px,1.2vw,18px) clamp(13px,1.5vw,22px);
+  font-size:clamp(13px,1.12vw,17px); font-weight:600; line-height:1.4; color:var(--ink);
+  margin:clamp(24px,3vw,42px) 0 0;
+}
+.band.lead{font-weight:500}
+.band.lead b{font-weight:600}
+.src{font-family:var(--mono); font-size:clamp(9px,.7vw,10.5px); line-height:1.5; color:var(--muted); margin:clamp(12px,1.2vw,18px) 0 0}
+
+/* ---- slide 2 grid ---- */
+.two{display:grid; grid-template-columns:1.05fr 1fr; gap:clamp(22px,3.2vw,54px); margin-top:clamp(26px,3.2vw,46px); align-items:start}
+.stack{display:flex; flex-direction:column; gap:clamp(20px,2.4vw,36px)}
+.protocol{background:var(--surface-2); border-radius:12px; padding:clamp(16px,1.9vw,28px)}
+.sec--alt .protocol{background:var(--ground)}
+.protocol h2{font-size:clamp(15px,1.35vw,20px); font-weight:600; margin:0 0 clamp(12px,1.4vw,20px); color:var(--ink)}
+.steps{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:clamp(10px,1.1vw,16px)}
+.steps li{display:flex; gap:12px; align-items:flex-start}
+.steps .n{
+  width:clamp(20px,1.85vw,26px); height:clamp(20px,1.85vw,26px); flex:none; border-radius:50%;
+  background:var(--accent); color:var(--ground); font-family:var(--mono);
+  font-size:clamp(11px,.95vw,13px); font-weight:600; display:grid; place-items:center; margin-top:1px;
+}
+.steps p{margin:0; font-size:clamp(13px,1.02vw,15.5px); line-height:1.42; color:var(--ink-soft)}
+.protocol .note{
+  font-size:clamp(12px,.95vw,14px); line-height:1.45; color:var(--muted);
+  margin:clamp(13px,1.5vw,22px) 0 0; padding-top:clamp(11px,1.2vw,17px); border-top:1px solid var(--line);
+}
+
+/* ---- slide 3 · the void stage ---- */
+#s3{position:relative; border-bottom:none; color:#EAF4F6}
+#s3 .void{
+  position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(64% 52% at 50% 44%, rgba(18,72,70,.30) 0%, rgba(6,26,28,.18) 38%, transparent 72%),
+    radial-gradient(130% 92% at 50% 42%, #08171D 0%, #030A0E 44%, #000203 78%, #000 100%);
+}
+#s3 .inner{position:relative; z-index:1}
+#s3 .eyebrow{color:#5FD3C7}
+#s3 h1{color:#F2F8FA}
+#s3 h1 em{color:#5FD3C7}
+
+.stagewrap{margin-top:clamp(18px,2.4vw,36px)}
+.stagescroll{overflow-x:auto}
+.stage{position:relative; width:100%; min-width:700px; aspect-ratio:1000/440}
+.fit{
+  position:absolute; left:50%; top:50%; width:1000px; height:440px; margin:-220px 0 0 -500px;
+  transform:scale(var(--k,1)); transform-origin:50% 50%;
+  perspective:1400px; perspective-origin:50% 50%;
+}
+/* the nodes are drawn in webgl, underneath the wires and the type */
+.n3d{position:absolute; inset:0; z-index:0}
+.n3d canvas{display:block; width:100%; height:100%}
+/* the wires and the type hold still, all the life is inside the shapes */
+.world{
+  position:absolute; left:500px; top:220px; width:0; height:0; transform-style:preserve-3d;
+}
+.dust{position:absolute; left:0; top:0; border-radius:50%; background:#CFECE8}
+
+/* ---- the links ---- */
+.link{
+  position:absolute; left:0; top:0; height:1px; width:var(--len);
+  transform-origin:0 50%;
+  transform:translate3d(calc(var(--x) - 500px), calc(var(--y) - 220px), 0) rotate(var(--rot));
+}
+.wire{
+  position:absolute; inset:0; transform-origin:0 50%; opacity:.2;
+  background:linear-gradient(90deg, rgba(95,211,199,.25), rgba(140,230,218,.85) 50%, rgba(95,211,199,.25));
+}
+.pkt{position:absolute; left:0; top:0; width:0; height:0}
+.pkt i{
+  position:absolute; right:-1px; top:-1.5px; width:38px; height:3px; border-radius:2px; opacity:0;
+  background:linear-gradient(90deg, rgba(95,211,199,0), rgba(120,235,222,.30) 58%, rgba(244,255,253,.92) 100%);
+  box-shadow:0 0 6px rgba(95,211,199,.45);
+}
+.pkt.rev i{right:auto; left:-3px; transform:scaleX(-1)}
+.pkt.back i{
+  background:linear-gradient(90deg, rgba(224,165,82,0), rgba(240,196,130,.30) 58%, rgba(255,243,226,.92) 100%);
+  box-shadow:0 0 6px rgba(224,165,82,.42);
+}
+
+/* ---- the node wrappers: glow, label, position ---- */
+.orbw{
+  position:absolute; left:0; top:0; width:0; height:0; transform-style:preserve-3d;
+  transform:translate3d(calc(var(--x) - 500px), calc(var(--y) - 220px), var(--z,0px));
+  --fill:transparent; --edge:rgba(255,255,255,.85); --ew:1px; --pulse:rgba(200,225,230,.22);
+}
+.orbw.hub{--fill:rgba(47,184,172,.10); --edge:#fff; --ew:1.5px; --pulse:rgba(95,211,199,.30)}
+.orbb{
+  position:absolute; left:0; top:0; width:0; height:0; transform-style:preserve-3d;
+}
+
+.orbb>*{
+  position:absolute; left:0; top:0; border-radius:50%;
+  width:calc(var(--r) * 2); height:calc(var(--r) * 2);
+  margin:calc(var(--r) * -1) 0 0 calc(var(--r) * -1);
+}
+.glow{
+  width:calc(var(--r)*3.2); height:calc(var(--r)*3.2); margin:calc(var(--r)*-1.6) 0 0 calc(var(--r)*-1.6);
+  background:radial-gradient(circle,var(--pulse) 0,transparent 62%); opacity:0;
+}
+
+/* ---- type in the scene ---- */
+.lab{
+  position:absolute; left:0; top:0; width:340px; margin:0 0 0 -170px; text-align:center;
+  height:auto; border-radius:0; transform:translate3d(0, var(--ly), 3px);
+}
+.lab b{
+  display:block; font-family:var(--mono); font-size:15px; font-weight:600; line-height:18px;
+  letter-spacing:.14em; text-transform:uppercase; color:#EFF7F9;
+}
+.lab span{
+  display:block; font-family:var(--body); font-size:13.5px; line-height:17px; margin-top:6px; color:#7E9AA3;
+}
+.orbw.hub .lab b{font-size:17px; color:#FFFFFF}
+.orbw.hub .lab span{color:#9FD8D1}
+.leg{
+  position:absolute; left:0; top:0; width:250px; margin-left:-125px; text-align:center;
+  transform:translate3d(calc(var(--x) - 500px), calc(var(--y) - 220px), 2px);
+  font-family:var(--mono); font-size:11px; font-weight:500; line-height:14px;
+  letter-spacing:.17em; text-transform:uppercase; color:#93BCC2;
+}
+.leg.back{color:#D9A45E}
+
+#s3.armed .fade{opacity:0; transform:translateY(9px)}
+#s3.armed.play .fade{opacity:1; transform:none; transition:opacity .6s ease var(--d,0s), transform .6s ease var(--d,0s)}
+
+/* ---- scroll cue + rail ---- */
+.cue{
+  font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); margin:clamp(22px,2.6vw,38px) 0 0; display:flex; align-items:center; gap:9px;
+}
+.cue span{display:inline-block; animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+.rail{
+  position:fixed; right:clamp(14px,1.8vw,26px); top:50%; transform:translateY(-50%);
+  display:flex; flex-direction:column; gap:14px; z-index:5;
+}
+.rail a{
+  display:flex; align-items:center; gap:9px; text-decoration:none;
+  font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+}
+.rail i{
+  display:block; width:9px; height:9px; border-radius:50%; border:1.5px solid var(--line);
+  background:var(--ground); transition:all .2s ease; flex:none;
+}
+.rail a[aria-current="true"] i{background:var(--accent); border-color:var(--accent); transform:scale(1.25)}
+.rail a[aria-current="true"]{color:var(--accent-ink)}
+.rail em{font-style:normal; opacity:0; transition:opacity .2s ease}
+.rail a:hover em{opacity:1}
+.rail a:focus-visible{outline:2px solid var(--accent); outline-offset:4px; border-radius:4px}
+@media (max-width:900px){.rail{display:none}}
+
+@media (max-width:820px){
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .tiles.tiles--three{grid-template-columns:1fr}
+  .cols,.two{grid-template-columns:1fr}
+  h1,.sec h1{max-width:none}
+  .sec,#s1{padding-block:clamp(52px,12vw,72px)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js-reveal .rv{opacity:1; transform:none}
+  .js-reveal .rv.in{transition:none}
+  .cue span{animation:none}
+  .world{animation:none}
+  .orbb{animation:none}
+  #s3.armed .fade{opacity:1; transform:none}
+  #s3.armed.play .fade{transition:none}
+}
+</style>
+</head>
+<body>
+<nav class="rail" aria-label="Sections">
+  <a href="#s1" aria-current="true"><i></i><em>Context</em></a>
+  <a href="#s2" aria-current="false"><i></i><em>The idea</em></a>
+  <a href="#s3" aria-current="false"><i></i><em>How it works</em></a>
+  <a href="#s4" aria-current="false"><i></i><em>Question I</em></a>
+  <a href="#s5" aria-current="false"><i></i><em>Question II</em></a>
+</nav>
+
+<!-- ============ 1 ============ -->
+<section class="sec" id="s1">
+  <div class="inner">
+    <div class="brand">instant</div>
+    <h1><em>$4 trillion</em> of US stock trades settle every day through one clearing house, one day after the trade.</h1>
+
+    <div class="tiles">
+      <div class="tile"><div class="fig">$4.0 tn</div><div class="cap">cleared by the NSCC every single day</div><div class="sub">386 m trade sides · Q1 2026</div></div>
+      <div class="tile"><div class="fig">T+1</div><div class="cap">settlement cycle in the US since 28 May 2024</div><div class="sub">EU, UK, CH follow 11 Oct 2027</div></div>
+      <div class="tile"><div class="fig">$33.5 bn</div><div class="cap">collateral demanded in one morning</div><div class="sub">28 Jan 2021 · $16.2 bn normally</div></div>
+      <div class="tile"><div class="fig">$250 k</div><div class="cap">minimum deposit before your first trade</div><div class="sub">plus membership, capital, US domicile</div></div>
+    </div>
+
+    <div class="cols">
+      <div>
+        <div class="colhead"><span class="dot" aria-hidden="true">1</span><h2>The cost is not the fee, it is the overnight call</h2></div>
+        <ul class="colbody">
+          <li>Clearing fees are trivial: about <b>half a cent</b> on a $10,000 trade. The binding constraint is collateral, recalculated every night.</li>
+          <li>Margin scales with volatility: <b>$2.80</b> held per $100 of net position becomes <b>$18.60</b> when volatility jumps. In cash, before the open.</li>
+          <li>28 Jan 2021: the call on Robinhood went from $0.7 bn to <b>$3.7 bn overnight</b>; it restricted trading and raised $3.4 bn in four days.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="colhead"><span class="dot" aria-hidden="true">2</span><h2>Why now: the rails and the demand both moved</h2></div>
+        <ul class="colbody">
+          <li>DTCC ran real tokenised stock trades on 15 Jul 2026 with 30+ firms; public launch Oct 2026. SEC cleared Nasdaq to trade tokenised shares (Mar 2026).</li>
+          <li>Demand is already proven: <b>$10 bn+</b> traded in tokenised stocks before Kraken acquired Backed (Dec 2025); Ondo Stocks above $1 bn.</li>
+          <li>On-chain dollars at scale: $306 bn of stablecoins, $7.5 tn of tokenised repo settled in June 2026.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="band">The opportunity is not cheaper settlement: it is the clients, hours and assets this system cannot serve.</p>
+    <p class="src">Sources: NSCC CPMI-IOSCO disclosure Q1 2026; NSCC fee guide 2026; testimony of V. Tenev (18 Feb 2021) and M. Bodson (6 May 2021), House Financial Services Committee; NSCC minimum deposit per SEC rule filing, Federal Register 14 May 2021 (re-verify); SEC Release 34-105047 (18 Mar 2026); DTCC 15 Jul 2026; Kraken Dec 2025; Ondo Jul 2026; DefiLlama 8 Sep 2026; Broadridge 7 Jul 2026.</p>
+    <p class="cue"><span aria-hidden="true">&#8595;</span> scroll</p>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="sec sec--alt" id="s2">
+  <div class="inner">
+    <h1>No clearing house means no credit: every trade must be paid in full, instantly. <em>We finance that instant.</em></h1>
+
+    <div class="two">
+      <div class="stack">
+        <div>
+          <div class="colhead"><span class="dot" aria-hidden="true">&#8599;</span><h2>Why brokers move on-chain</h2></div>
+          <ul class="colbody">
+            <li><b>Revenue, not cost:</b> 24/7 trading, fractional shares, and clients the US system will never onboard.</li>
+            <li>Tokenised securities become usable as collateral instantly, anywhere, without a custody chain.</li>
+            <li>The demand is already there, the products exist, the settlement rail is what is missing.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="protocol">
+        <h2>Our protocol: a single atomic transaction</h2>
+        <ol class="steps">
+          <li><span class="n">1</span><p>A flash loan advances 100 % of the purchase amount</p></li>
+          <li><span class="n">2</span><p>Atomic delivery-versus-payment: cash out, tokenised share in</p></li>
+          <li><span class="n">3</span><p>The share just bought is pledged as collateral in the same transaction</p></li>
+          <li><span class="n">4</span><p>The collateralised loan repays the flash loan</p></li>
+        </ol>
+        <p class="note">All four steps commit together or none of them happened.</p>
+      </div>
+    </div>
+
+    <div class="tiles tiles--two">
+      <div class="tile">
+        <div class="fig">$12.85 bn</div>
+        <div class="cap">traded every month in tokenised stocks, today</div>
+        <div class="sub">rwa.xyz, 14 Sep 2026 · monthly volume up 33× in eight months</div>
+      </div>
+      <div class="tile">
+        <div class="fig">$2.6–3.6 tn</div>
+        <div class="cap">Citi's 2030 forecast for tokenised equities alone</div>
+        <div class="sub">McKinsey forecasts under $2 tn for all tokenised assets; the spread between them is the honest answer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="sec" id="s3">
+  <div class="void" aria-hidden="true"></div>
+  <div class="inner">
+    <p class="eyebrow fade" style="--d:.8s">How it works &nbsp;·&nbsp; where the liquidity comes from</p>
+    <h1 class="fade" style="--d:1.02s">Capital from anywhere, risk curated by professionals, <em>lent for the length of one transaction.</em></h1>
+
+    <div class="stagewrap">
+      <div class="stagescroll">
+        <div class="stage" id="stage" role="img" aria-label="Diagram: lenders worldwide deposit into curated pools; the pools advance a flash loan to our protocol, the sphere at the centre of the system; the protocol advances the full purchase price to the broker, who settles atomically and repays with a fee; the protocol then redistributes principal and yield back to the pools and the lenders, every leg inside the same transaction.">
+          <div class="n3d" id="n3d" aria-hidden="true"></div>
+          <div class="fit">
+            <div class="world" id="world">
+
+              <!-- one link per pair, trimmed to each shape: lenders–pools, pools–protocol, protocol–broker -->
+              <div class="link" style="--x:150px;--y:169px;--len:96px;--rot:90deg"><i class="wire"></i><div class="pkt"><i></i></div></div>
+              <div class="link" style="--x:182.8px;--y:306.1px;--len:260.7px;--rot:-15.19deg"><i class="wire"></i><div class="pkt"><i></i></div></div>
+              <div class="link" style="--x:566px;--y:220px;--len:245px;--rot:0deg"><i class="wire"></i><div class="pkt"><i></i></div></div>
+
+              <!-- 1 · lenders -->
+              <div class="orbw" style="--x:150px;--y:125px;--z:-24px;--r:38px;--ly:-96px;--bd:8.5s;--bdl:-2s">
+                <div class="orbb">
+                  <i class="glow"></i>
+                  <div class="lab"><b>Lenders</b><span>worldwide, idle capital</span></div>
+                </div>
+              </div>
+
+              <!-- 2 · curated pools -->
+              <div class="orbw" style="--x:150px;--y:315px;--z:20px;--r:38px;--ly:52px;--bd:10s;--bdl:-5s">
+                <div class="orbb">
+                  <i class="glow"></i>
+                  <div class="lab"><b>Curated pools</b><span>curators set the limits</span></div>
+                </div>
+              </div>
+
+              <!-- 3 · our protocol: the centre that redistributes -->
+              <div class="orbw hub" style="--x:500px;--y:220px;--z:40px;--r:74px;--ly:100px;--bd:12s">
+                <div class="orbb">
+                  <i class="glow"></i>
+                  <div class="lab"><b>Our protocol</b><span>advances 100 % of the price, then redistributes</span></div>
+                </div>
+              </div>
+
+              <!-- 4 · the broker -->
+              <div class="orbw" style="--x:855px;--y:220px;--z:-16px;--r:38px;--ly:-96px;--bd:9.5s;--bdl:-7s">
+                <div class="orbb">
+                  <i class="glow"></i>
+                  <div class="lab"><b>The broker</b><span>settles atomically</span></div>
+                </div>
+              </div>
+
+              <div class="leg" style="--x:214px;--y:213px">deposit</div>
+              <div class="leg" style="--x:334px;--y:293px">flash loan</div>
+              <div class="leg" style="--x:677px;--y:183px">cash leg</div>
+              <div class="leg back" style="--x:677px;--y:245px">repayment + fee</div>
+              <div class="leg" style="--x:334px;--y:243px">principal + yield</div>
+              <div class="leg" style="--x:82px;--y:213px">to the lenders</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="sec sec--alt" id="s4">
+  <div class="inner">
+    <p class="eyebrow">Question I &nbsp;·&nbsp; Is the data corrupted?</p>
+    <h1>The data isn't corrupted, it's just not settled yet. <em>People pay for that one-day gap.</em></h1>
+
+    <div class="cols">
+      <div>
+        <div class="colhead"><span class="dot" aria-hidden="true">1</span><h2>Who pays for the gap</h2></div>
+        <ul class="colbody">
+          <li><b>Retail investors:</b> trading gets frozen when the system needs cash fast, not when they have done anything wrong.</li>
+          <li><b>Small and non-US brokers:</b> shut out entirely, not because their trades are risky, but because the entry ticket is too high.</li>
+          <li><b>Everyone else:</b> billions immobilised at all times, just in case, money that cannot be used while it waits.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="colhead"><span class="dot" aria-hidden="true">2</span><h2>And blockchain cannot inherit the fix</h2></div>
+        <ul class="colbody">
+          <li>As we said: no company stands in the middle of a public chain, so no one can vouch for a stranger's ability to pay.</li>
+          <li>The safety net disappears with the middleman: the buyer must pay in full, at execution.</li>
+          <li>That is the constraint our protocol exists to answer.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="colhead tilehead"><h2>The cost of the gap, in numbers</h2></div>
+    <div class="tiles tiles--three">
+      <div class="tile"><div class="fig">$16.2 bn</div><div class="cap">immobilised at the clearing house at all times</div><div class="sub">31 Mar 2026 · and $33.5 bn on the morning of 28 Jan 2021</div></div>
+      <div class="tile"><div class="fig">95 %</div><div class="cap">of that collateral is held in cash</div><div class="sub">the most expensive form there is; equities are not accepted</div></div>
+      <div class="tile"><div class="fig">3 of 149</div><div class="cap">foreign firms among NSCC participants</div><div class="sub">31 Mar 2026 · plus a $250,000 minimum deposit before the first trade</div></div>
+    </div>
+
+    <p class="band">The record isn't wrong. It is simply unfinished for a full day, and someone has to be paid to carry that day.</p>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="sec" id="s5">
+  <div class="inner">
+    <p class="eyebrow">Question II &nbsp;·&nbsp; Do outsiders have an incentive to corrupt it?</p>
+    <h1>We advance a stranger the full purchase price. The incentive to disappear is real, <em>so we remove the opportunity, not the motive.</em></h1>
+
+    <div class="two">
+      <div class="stack">
+        <div>
+          <div class="colhead"><h2>Four moments, four temptations</h2></div>
+          <ol class="steps">
+            <li><span class="n">1</span><p>We send the full amount. Keep it, never buy.</p></li>
+            <li><span class="n">2</span><p>They buy the stock. Keep the stock, skip repayment.</p></li>
+            <li><span class="n">3</span><p>The stock becomes collateral. Pledge it twice, to two lenders.</p></li>
+            <li><span class="n">4</span><p>Collateral repays the loan. Hand over something worthless instead.</p></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="protocol">
+        <h2>One move, not four</h2>
+        <ul class="colbody">
+          <li>The old system prevents this by vetting who is allowed to trade at all.</li>
+          <li>We prevent it differently: the four steps are one transaction. They commit together, or none of them happened.</li>
+          <li>There is no midpoint at which anyone can walk away holding only part of it.</li>
+        </ul>
+        <p class="note">The atomic construction removes the risk of the settlement instant. What survives the transaction is an ordinary secured loan.</p>
+      </div>
+    </div>
+
+    <p class="band">For the seconds of the advance we lend to a stranger with nothing held against it, and it is still safe. Not because we trust them, but because the alternative cannot execute.</p>
+    <p class="src">Trust does not vanish. Someone still sets the lending limits, something still has to price the collateral, and the hours that follow the trade are a secured loan. That residual window is exactly what curators are paid to price. We removed trust from the one place that used to cost billions, not from everywhere.</p>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/4.5.0/anime.umd.min.js"></script>
+<script>
+/* section rail */
+(function(){
+  var secs = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3'),
+              document.getElementById('s4'), document.getElementById('s5')];
+  var links = Array.prototype.slice.call(document.querySelectorAll('.rail a'));
+  if (!('IntersectionObserver' in window)) return;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      var k = secs.indexOf(e.target);
+      links.forEach(function(a, j){ a.setAttribute('aria-current', j === k ? 'true' : 'false'); });
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+  secs.forEach(function(s){ obs.observe(s); });
+})();
+
+/* blocks fade up as they are reached */
+(function(){
+  var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if (reduced || !('IntersectionObserver' in window)) return;
+  document.documentElement.classList.add('js-reveal');
+
+  var targets = [];
+  Array.prototype.forEach.call(document.querySelectorAll('.sec'), function(sec){
+    if (sec.id === 's3') return;                    /* the dark scene runs its own arrival */
+    Array.prototype.forEach.call(sec.querySelectorAll('.inner > *'), function(el){
+      /* a row of tiles or columns arrives item by item, not as one slab */
+      var row = el.matches('.tiles, .cols, .two') ? Array.prototype.slice.call(el.children) : [el];
+      row.forEach(function(node, i){
+        node.classList.add('rv');
+        if (i) node.style.setProperty('--rd', (i * 90) + 'ms');
+        targets.push(node);
+      });
+    });
+  });
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: .15 });
+  targets.forEach(function(t){ io.observe(t); });
+})();
+
+/* the constellation */
+(function(){
+  var s3 = document.getElementById('s3');
+  var stage = document.getElementById('stage');
+  var fitEl = stage.querySelector('.fit');
+  var world = document.getElementById('world');
+  var A = window.anime;
+  var q = function(sel, root){ return Array.prototype.slice.call((root || stage).querySelectorAll(sel)); };
+
+  /* the constellation is authored 1000px wide, then fitted to the column */
+  function fit(){ fitEl.style.setProperty('--k', (stage.clientWidth / 1000).toFixed(4)); }
+  fit();
+  if ('ResizeObserver' in window) new ResizeObserver(fit).observe(stage);
+  else window.addEventListener('resize', fit);
+
+  /* dust at assorted depths, it is what gives the void a volume */
+  var dust = [];
+  for (var i = 0; i < 46; i++){
+    var d = document.createElement('i');
+    var s = (0.9 + Math.random() * 1.7).toFixed(1);
+    d.className = 'dust';
+    d.style.width = d.style.height = s + 'px';
+    d.style.transform = 'translate3d(' + Math.round(-640 + Math.random() * 1280) + 'px,' +
+                        Math.round(-300 + Math.random() * 600) + 'px,' +
+                        Math.round(-460 + Math.random() * 600) + 'px)';
+    d.style.opacity = (0.08 + Math.random() * 0.34).toFixed(2);
+    world.insertBefore(d, world.firstChild);
+    dust.push(d);
+  }
+
+  var voidbg = s3.querySelector('.void');
+  var orbw   = q('.orbw');
+  var labs   = q('.lab');
+  var legs   = q('.leg');
+  var wires  = q('.wire');
+  var pkts   = q('.pkt');
+  var glows  = orbw.map(function(o){ return o.querySelector('.glow'); });
+  var LEN    = [96, 260.7, 245];
+
+  /* the money always ends where it started: the hub takes the repayment in,
+     then pushes principal and yield back out to the liquidity side. */
+  var BEATS = [
+    { link:0, dir: 1, to:1, leg:0, at:0    , dur:760 },
+    { link:1, dir: 1, to:2, leg:1, at:880  , dur:820 },
+    { link:2, dir: 1, to:3, leg:2, at:1800 , dur:820 },
+    { link:2, dir:-1, to:2, leg:3, at:2720 , dur:840, back:true, flash:true },
+    { link:1, dir:-1, to:1, leg:4, at:3700 , dur:820 },
+    { link:0, dir:-1, to:0, leg:5, at:4620 , dur:760 }
+  ];
+  var LOOP = 6000;
+
+  /* ---------- the four nodes, drawn in webgl under the wires and the type ---------- */
+  var N3D = (function(){
+    var host = document.getElementById('n3d');
+    if (!host || !window.THREE) return null;
+
+    var WHITE = 0xEAF7F6, TEALC = 0x5FD3C7;
+    /* a round sprite, so the validator dots are points of light and not squares */
+    function dotTex(){
+      var c = document.createElement('canvas'); c.width = c.height = 64;
+      var ctx = c.getContext('2d'), gr = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.35, 'rgba(255,255,255,.85)');
+      gr.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = gr; ctx.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    }
+    var P = [{ x:150, y:125, r:38 }, { x:150, y:315, r:38 }, { x:500, y:220, r:74 }, { x:855, y:220, r:38 }];
+
+    var R3 = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+    R3.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    R3.setClearColor(0x000000, 0);
+    host.appendChild(R3.domElement);
+
+    var scene = new THREE.Scene();
+    /* fov and distance chosen so the z=0 plane maps 1:1 onto the 1000×440 grid */
+    var fov = 26, cam = new THREE.PerspectiveCamera(fov, 1000 / 440, 10, 5000);
+    cam.position.z = 220 / Math.tan(fov * Math.PI / 360);
+    scene.add(new THREE.AmbientLight(0x9FC4CC, .5));
+    var keyL = new THREE.DirectionalLight(0xFFFFFF, 1); keyL.position.set(-.4, .8, 1); scene.add(keyL);
+    var fillL = new THREE.DirectionalLight(0x2FB8AC, .6); fillL.position.set(.7, -.4, .5); scene.add(fillL);
+
+    var lastFrame = null;
+    function fitCanvas(){
+      R3.setSize(host.clientWidth, host.clientHeight, false);
+      if (lastFrame) lastFrame();            /* a resize clears the buffer: draw the same frame again */
+    }
+    fitCanvas();
+    if ('ResizeObserver' in window) new ResizeObserver(fitCanvas).observe(host);
+    else window.addEventListener('resize', fitCanvas);
+
+    /* 1 · lenders: the mesh on its own, nothing inside it */
+    function lenders(r){
+      var g = new THREE.Group(), N = 118, pts = [], golden = Math.PI * (3 - Math.sqrt(5)), i;
+      for (i = 0; i < N; i++){
+        var y = 1 - 2 * (i + .5) / N, rr = Math.sqrt(1 - y * y), th = golden * i;
+        pts.push(new THREE.Vector3(Math.cos(th) * rr * r, y * r, Math.sin(th) * rr * r));
+      }
+      var seg = [], seen = {};
+      pts.forEach(function(a, k){
+        pts.map(function(b, j){ return [a.distanceToSquared(b), j]; })
+           .sort(function(u, v){ return u[0] - v[0]; }).slice(1, 4)
+           .forEach(function(nb){
+             var id = Math.min(k, nb[1]) + '_' + Math.max(k, nb[1]);
+             if (seen[id]) return;
+             seen[id] = 1;
+             var b = pts[nb[1]];
+             seg.push(a.x, a.y, a.z, b.x, b.y, b.z);
+           });
+      });
+      var lg = new THREE.BufferGeometry();
+      lg.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
+      var lm = new THREE.LineBasicMaterial({ color:TEALC, transparent:true, opacity:.32 });
+      g.add(new THREE.LineSegments(lg, lm));
+
+      var pg = new THREE.BufferGeometry(), pos = [], col = new Float32Array(N * 3);
+      pts.forEach(function(v){ pos.push(v.x, v.y, v.z); });
+      pg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      pg.setAttribute('color', new THREE.BufferAttribute(col, 3));
+      var pm = new THREE.PointsMaterial({ size:11, vertexColors:true, transparent:true, depthWrite:false,
+                                          map:dotTex(), alphaTest:.04, blending:THREE.AdditiveBlending });
+      g.add(new THREE.Points(pg, pm));
+
+      var dim = new THREE.Color(0x2C6E71), mid = new THREE.Color(TEALC), hot = new THREE.Color(0xF2FFFC), tmp = new THREE.Color();
+      var seeds = pts.map(function(v, k){ return Math.abs(Math.sin(k * 12.9898) * 43758.5453) % 1; });
+      var M = [{ m:lm, o:.32 }, { m:pm, o:1 }];
+      return { group:g, mats:M, update:function(T, p){
+        g.rotation.set(.2, T * .16, 0);
+        pts.forEach(function(v, k){
+          var sd = seeds[k];
+          var flick = Math.sin(T * (1.2 + sd * 2.4) + sd * 40) > .93 ? .95 : .22;
+          var top = 1 - (v.y / r + 1) / 2;                       /* 0 at the top pole */
+          var wave = p > 0 ? Math.max(0, Math.min(1, (p * 1.5 - top) * 3)) : 0;
+          tmp.copy(dim).lerp(mid, flick).lerp(hot, wave * .9);
+          col[k * 3] = tmp.r; col[k * 3 + 1] = tmp.g; col[k * 3 + 2] = tmp.b;
+        });
+        pg.attributes.color.needsUpdate = true;
+        M[0].o = .28 + p * .45;
+      }};
+    }
+
+    /* 2 · curated pools: white edges over a black body */
+    function pools(r){
+      var g = new THREE.Group(), geo = new THREE.OctahedronGeometry(r * .74, 0);
+      var bm = new THREE.MeshBasicMaterial({ color:0x03090C, transparent:true, opacity:1 });
+      var body = new THREE.Mesh(geo, bm); body.scale.y = 1.5; g.add(body);
+      var lm = new THREE.LineBasicMaterial({ color:WHITE, transparent:true, opacity:.9 });
+      var ed = new THREE.LineSegments(new THREE.EdgesGeometry(geo), lm); ed.scale.y = 1.5; g.add(ed);
+      var M = [{ m:bm, o:1 }, { m:lm, o:.9 }];
+      return { group:g, mats:M, update:function(T, p){
+        g.rotation.set(Math.sin(T * .22) * .12, T * .3, 0);
+        M[1].o = .78 + p * .22;
+      }};
+    }
+
+    /* 3 · our protocol: a computation lattice: every cube is one step,
+       the light runs through the links, and the last cube is the result */
+    function protocol(r){
+      var g = new THREE.Group(), tilt = new THREE.Group(); g.add(tilt);
+      var c = r * .17;
+      var XS = [-.62 * r, -.24 * r, .14 * r], RX = .55 * r, OFF = [-.3 * r, 0, .3 * r];
+      var geo = new THREE.BoxGeometry(c, c, c), egeo = new THREE.EdgesGeometry(geo);
+      var rgeo = new THREE.BoxGeometry(c * 1.7, c * 1.7, c * 1.7), regeo = new THREE.EdgesGeometry(rgeo);
+      var mats = [], cubes = [];
+
+      /* every cube keeps the same orientation, so the edges stay aligned across the lattice */
+      function addCube(x, y, z, layer, big){
+        var fm = new THREE.MeshStandardMaterial({ color:0x0A1A21, metalness:.25, roughness:.5,
+                                                  emissive:0x2FB8AC, emissiveIntensity:0, transparent:true, opacity:1 });
+        var lm = new THREE.LineBasicMaterial({ color:WHITE, transparent:true, opacity:.5 });
+        var m = new THREE.Mesh(big ? rgeo : geo, fm);
+        m.position.set(x, y, z);
+        m.add(new THREE.LineSegments(big ? regeo : egeo, lm));
+        tilt.add(m);
+        var fe = { m:fm, o:1 }, le = { m:lm, o:.5 };
+        mats.push(fe, le);
+        cubes.push({ fm:fm, le:le, layer:layer, p:m.position, m:m });
+        return cubes.length - 1;
+      }
+      var layers = XS.map(function(x, L){
+        var ids = [];
+        OFF.forEach(function(y){ OFF.forEach(function(z){ ids.push(addCube(x, y, z, L, false)); }); });
+        return ids;
+      });
+      var resultId = addCube(RX, 0, 0, 3, true);
+
+      /* each step feeds the next one: straight through, plus one crossing branch */
+      var links = [];
+      function link(a, b, stage){ links.push({ a:cubes[a].p, b:cubes[b].p, stage:stage }); }
+      [0, 1].forEach(function(L){
+        layers[L].forEach(function(id, k){
+          link(id, layers[L + 1][k], L);
+          link(id, layers[L + 1][(k + 4) % 9], L);
+        });
+      });
+      layers[2].forEach(function(id){ link(id, resultId, 2); });
+
+      var lpos = [];
+      links.forEach(function(l){ lpos.push(l.a.x, l.a.y, l.a.z, l.b.x, l.b.y, l.b.z); });
+      var lgeo = new THREE.BufferGeometry();
+      lgeo.setAttribute('position', new THREE.Float32BufferAttribute(lpos, 3));
+      var llm = new THREE.LineBasicMaterial({ color:TEALC, transparent:true, opacity:.14 });
+      tilt.add(new THREE.LineSegments(lgeo, llm));
+      var lle = { m:llm, o:.14 }; mats.push(lle);
+
+      /* one point per link, the value in transit between two steps */
+      var dpos = new Float32Array(links.length * 3), dcol = new Float32Array(links.length * 3);
+      var dgeo = new THREE.BufferGeometry();
+      dgeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+      dgeo.setAttribute('color', new THREE.BufferAttribute(dcol, 3));
+      var dm = new THREE.PointsMaterial({ size:6, vertexColors:true, map:dotTex(), transparent:true,
+                                          depthWrite:false, blending:THREE.AdditiveBlending });
+      tilt.add(new THREE.Points(dgeo, dm));
+      mats.push({ m:dm, o:1 });
+
+      var CYC = 2.6, STG = .58, HOP = .46, t0 = -9, armed = false;
+      return { group:g, mats:mats, update:function(T, p){
+        tilt.rotation.set(.26 + Math.sin(T * .16) * .025, .4 + Math.sin(T * .11) * .05, 0);
+
+        /* a packet lands, the lattice runs a pass */
+        if (p > .55 && !armed){ t0 = T; armed = true; }
+        if (p < .2) armed = false;
+        var ph = (T - t0) % CYC;
+
+        cubes.forEach(function(q){
+          var x = ph - q.layer * STG, last = q.layer === 3;
+          var on = x < 0 ? 0 : Math.exp(-x / (last ? .8 : .34)) * Math.min(1, x / .06);
+          q.fm.emissiveIntensity = (last ? .09 : .02) + on * (last ? 1.5 : .75) + p * .12;
+          q.le.o = .4 + on * .55 + p * .1;
+        });
+
+        for (var i = 0; i < links.length; i++){
+          var L = links[i], k = (ph - L.stage * STG - .12) / HOP, v = 0, t = 0;
+          if (k > 0 && k < 1){ t = k * k * (3 - 2 * k); v = Math.sin(Math.PI * k); }
+          dpos[i * 3]     = L.a.x + (L.b.x - L.a.x) * t;
+          dpos[i * 3 + 1] = L.a.y + (L.b.y - L.a.y) * t;
+          dpos[i * 3 + 2] = L.a.z + (L.b.z - L.a.z) * t;
+          dcol[i * 3] = .76 * v; dcol[i * 3 + 1] = v; dcol[i * 3 + 2] = .95 * v;
+        }
+        dgeo.attributes.position.needsUpdate = true;
+        dgeo.attributes.color.needsUpdate = true;
+        lle.o = .12 + p * .2;
+      }};
+    }
+
+    /* 4 · the broker: one dashed circle */
+    function broker(r){
+      var g = new THREE.Group(), pts = [];
+      for (var i = 0; i <= 240; i++){
+        var a = i / 240 * Math.PI * 2;
+        pts.push(new THREE.Vector3(Math.cos(a) * r * .95, Math.sin(a) * r * .95, 0));
+      }
+      var lg = new THREE.BufferGeometry().setFromPoints(pts);
+      var lm = new THREE.LineDashedMaterial({ color:WHITE, transparent:true, opacity:.9, dashSize:8, gapSize:6.5 });
+      var line = new THREE.Line(lg, lm); line.computeLineDistances(); g.add(line);
+      var M = [{ m:lm, o:.9 }];
+      return { group:g, mats:M, update:function(T, p){
+        line.rotation.z = T * .14;
+        M[0].o = .76 + p * .24;
+      }};
+    }
+
+    var nodes = [lenders(P[0].r), pools(P[1].r), protocol(P[2].r), broker(P[3].r)];
+    nodes.forEach(function(n, i){ n.group.position.set(P[i].x - 500, 220 - P[i].y, 0); scene.add(n.group); });
+
+    return { frame:function(T, rev, pulse){
+      lastFrame = function(){
+        nodes.forEach(function(n, i){
+          n.update(T, pulse[i]);
+          n.group.scale.setScalar(rev[i].s);
+          n.mats.forEach(function(e){ e.m.opacity = e.o * rev[i].a; });
+        });
+        R3.render(scene, cam);
+      };
+      lastFrame();
+    }};
+  })();
+
+  /* the shapes arrive on the same beats the discs used to: satellites 1280 ms, centre 1820 ms */
+  function outBack(x){ var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+  function clamp01(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function revealAt(i, e){
+    var hub = i === 2, from = hub ? .22 : .34;
+    var start = hub ? 1820 : 1280 + 140 * (i === 3 ? 2 : i), dur = hub ? 980 : 820;
+    var x = clamp01((e - start) / dur);
+    return { s:from + (1 - from) * outBack(x), a:clamp01((e - start) / (dur * .55)) };
+  }
+  function pulseAt(t){
+    var out = [0, 0, 0, 0];
+    BEATS.forEach(function(b){
+      var end = b.at + b.dur, targets = b.extra ? [b.to, b.extra.to] : [b.to];
+      [t, t + LOOP].forEach(function(tt){
+        var dt = tt - (end - 60);
+        if (dt < 0 || dt >= 1300) return;
+        var v = dt < 200 ? dt / 200 : 1 - (dt - 200) / 1100;
+        targets.forEach(function(k){ out[k] = Math.max(out[k], v); });
+      });
+    });
+    return out;
+  }
+
+  var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var revealT0 = null, loopT0 = null, visible = true;
+  var SHOWN = [0,1,2,3].map(function(){ return { s:1, a:1 }; });
+
+  if (N3D){
+    if (reduced){
+      N3D.frame(0, SHOWN, [0, 0, 0, 0]);
+    } else {
+      requestAnimationFrame(function spin(now){
+        requestAnimationFrame(spin);
+        if (!visible) return;
+        var e = revealT0 === null ? 0 : now - revealT0;
+        N3D.frame(now / 1000,
+                  [0,1,2,3].map(function(i){ return revealAt(i, e); }),
+                  loopT0 === null ? [0, 0, 0, 0] : pulseAt((now - loopT0) % LOOP));
+      });
+    }
+  }
+
+  if (!A || reduced) return;
+
+  var tl = null, loop = null;
+
+  /* ---------- the arrival ---------- */
+  function build(){
+    tl = A.createTimeline({ autoplay:false, defaults:{ ease:'outQuad' }, onComplete:startLoop });
+
+    /* 1 · the page falls into the void, then the title arrives (css .fade) */
+    tl.add(voidbg, { opacity:[0, 1], duration:900, ease:'inOutQuad' }, 0)
+      .add(dust,   { opacity:[0, function(el){ return el.style.opacity || .2; }], duration:1400,
+                     delay:A.stagger(9) }, 500);
+
+    /* 2 · the shapes resolve out of the dark, the webgl layer runs that
+       on its own clock, on the same beats */
+
+    /* 3 · the centre ignites and claims the middle of the frame */
+    tl.add(glows[2], { opacity:[0, .34], duration:900 }, 1900);
+
+    /* 4 · the wires snap out of the hub */
+    tl.add(wires, { scaleX:[0, 1], duration:620, ease:'outQuad', delay:A.stagger(110) }, 2420)
+      .add(labs,  { opacity:[0, 1], duration:640, delay:A.stagger(90) }, 2700)
+      ;   /* step names stay dark until their leg actually carries something */
+  }
+
+  /* ---------- the transaction, on repeat ---------- */
+  function leg(t, b, link, dir, to){
+    var pkt = pkts[link], len = LEN[link], tip = pkt.querySelector('i');
+    t.add(pkt, {
+      x: dir > 0 ? [0, len] : [len, 0],
+      duration: b.dur, ease:'inOutSine',
+      onBegin: function(){ pkt.className = 'pkt' + (dir < 0 ? ' rev' : '') + (b.back ? ' back' : ''); }
+    }, b.at)
+     .add(tip, { opacity:[0, 1], duration:220, ease:'outQuad' }, b.at)
+     .add(tip, { opacity:[1, 0], duration:280, ease:'inQuad' }, b.at + b.dur - 280)
+     .add(wires[link], { opacity:[.2, .7], duration:220 }, b.at)
+     .add(wires[link], { opacity:[.7, .2], duration:520 }, b.at + b.dur - 120)
+     /* the node it reaches answers by brightening from within */
+     .add(glows[to], { opacity:[0, .8], duration:200 }, b.at + b.dur - 60)
+     .add(glows[to], { opacity:[.8, to === 2 ? .34 : 0], duration:900 }, b.at + b.dur + 140);
+  }
+
+  function startLoop(){
+    loopT0 = performance.now();
+    A.utils.remove(pkts.concat(q('.pkt i'), wires, glows, legs));
+    loop = A.createTimeline({ loop:true, duration:LOOP, defaults:{ ease:'outQuad' } });
+
+    BEATS.forEach(function(b){
+      leg(loop, b, b.link, b.dir, b.to);
+      if (b.extra) leg(loop, b, b.extra.link, b.extra.dir, b.extra.to);
+      loop.add(legs[b.leg], { opacity:[0, 1], duration:260, ease:'outQuad' }, b.at)
+          .add(legs[b.leg], { opacity:[1, 0], duration:280, ease:'inQuad' }, b.at + b.dur - 60);
+
+      /* the repayment lands: the hub flares before it pays everyone back */
+      if (b.flash){
+        loop.add(glows[2], { opacity:[.34, .9], duration:180 }, b.at + b.dur - 40)
+            .add(glows[2], { opacity:[.9, .34], duration:900 }, b.at + b.dur + 160);
+      }
+    });
+  }
+
+  function arm(){
+    var U = A.utils;
+    U.set(voidbg, { opacity:0 });
+    U.set(dust, { opacity:0 });
+    U.set(wires, { scaleX:0, opacity:.2 });
+    U.set(pkts, { x:0 });
+    U.set(q('.pkt i'), { opacity:0 });
+    U.set(glows, { opacity:0 });
+    U.set(labs.concat(legs), { opacity:0 });
+    pkts.forEach(function(p){ p.className = 'pkt'; });
+  }
+
+  function play(){
+    if (loop){ loop.pause(); loop = null; }
+    if (tl){ tl.pause(); }
+    A.utils.remove([wires, pkts, q('.pkt i'), glows, labs, legs, dust, [voidbg]].reduce(function(a, b){ return a.concat(b); }, []));
+    revealT0 = performance.now(); loopT0 = null;
+    s3.classList.remove('play');
+    void s3.offsetWidth;
+    s3.classList.add('play');
+    arm();
+    build();
+    tl.play();
+  }
+
+  s3.classList.add('armed');
+
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ visible = e.isIntersecting; if (e.isIntersecting) play(); });
+    }, { threshold:.3 }).observe(s3);
+  } else {
+    play();
+  }
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'r' && s3.getBoundingClientRect().top < window.innerHeight * .6) play();
+  });
+})();
+</script>
+</body>
+</html>

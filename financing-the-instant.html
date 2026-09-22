@@ -360,37 +360,37 @@ h1 em{font-style:normal; color:var(--teal)}
     <div class="two">
       <div class="stack">
         <div>
-          <div class="colhead"><span class="dot" aria-hidden="true">&#8599;</span><h2>Why brokers move on-chain</h2></div>
+          <div class="colhead"><span class="dot" aria-hidden="true">!</span><h2>The catch: on-chain, settlement is atomic</h2></div>
           <ul class="colbody">
-            <li><b>Revenue, not cost:</b> 24/7 trading, fractional shares, and clients the US system will never onboard.</li>
-            <li>Tokenised securities become usable as collateral instantly, anywhere, without a custody chain.</li>
-            <li>The demand is already there, the products exist, the settlement rail is what is missing.</li>
+            <li><b>No one stands in the middle.</b> A public chain has no clearing house: no netting of buys against sells, no one vouching for a stranger's ability to pay. Delivery and payment happen in the same second, or not at all.</li>
+            <li><b>So every purchase is paid 100 %, at execution,</b> in dollars already on-chain. The client's cash still travels on bank rails, and lands a business day later.</li>
+            <li><b>The broker carries the gap.</b> Either it parks a stablecoin float sized to its busiest day on its own balance sheet, or it turns the order away.</li>
           </ul>
         </div>
       </div>
 
       <div class="protocol">
-        <h2>Our protocol: a single atomic transaction</h2>
+        <h2>Our protocol: one smart contract, one atomic transaction</h2>
         <ol class="steps">
           <li><span class="n">1</span><p>A flash loan advances 100 % of the purchase amount</p></li>
           <li><span class="n">2</span><p>Atomic delivery-versus-payment: cash out, tokenised share in</p></li>
           <li><span class="n">3</span><p>The share just bought is pledged as collateral in the same transaction</p></li>
           <li><span class="n">4</span><p>The collateralised loan repays the flash loan</p></li>
         </ol>
-        <p class="note">All four steps commit together or none of them happened.</p>
+        <p class="note">All four steps commit together or none of them happened. Then, outside the transaction: the secured loan runs for a few hours, up to a day, until the broker repays it from its client's cash.</p>
       </div>
     </div>
 
     <div class="tiles tiles--two">
       <div class="tile">
-        <div class="fig">$12.85 bn</div>
-        <div class="cap">traded every month in tokenised stocks, today</div>
-        <div class="sub">rwa.xyz, 14 Sep 2026 · monthly volume up 33× in eight months</div>
+        <div class="fig">100 %</div>
+        <div class="cap">of every purchase paid at execution, on-chain</div>
+        <div class="sub">no netting, no credit, no next day</div>
       </div>
       <div class="tile">
-        <div class="fig">$2.6–3.6 tn</div>
-        <div class="cap">Citi's 2030 forecast for tokenised equities alone</div>
-        <div class="sub">McKinsey forecasts under $2 tn for all tokenised assets; the spread between them is the honest answer</div>
+        <div class="fig">~70×</div>
+        <div class="cap">more cash to fund the same trades than through the NSCC</div>
+        <div class="sub">the NSCC nets 98.6 % of what it clears; on-chain, every dollar moves · market-wide average</div>
       </div>
     </div>
   </div>
